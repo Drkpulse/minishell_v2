@@ -17,10 +17,10 @@ ${NAME}: init libft ${OBJ}
 all: ${NAME}
 
 clean: libft_clean
-	rm -f ${OBJ} ${OBJ}
+	rm -f ${OBJ}
 
 fclean: clean libft_fclean
-	rm -f ${BIN_DIR}/${NAME} ${BIN_DIR}/${NAME}_bonus
+	rm -f ${BIN_DIR}/${NAME}
 
 re: fclean all
 
