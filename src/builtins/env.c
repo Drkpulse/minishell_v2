@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 14:27:48 by joseferr          #+#    #+#             */
-/*   Updated: 2025/04/05 10:33:30 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/01 16:12:59 by pda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	ft_env(t_data *data)
 	i = 0;
 	while (data->env[i] != NULL)
 	{
-		ft_printf("%s\n", data->env[i]);
+		if (ft_strchr(data->env[i], '='))
+			ft_printf("%s\n", data->env[i]);
 		i++;
 	}
 }
