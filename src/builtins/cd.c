@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 14:27:48 by joseferr          #+#    #+#             */
-/*   Updated: 2025/05/31 14:14:21 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/01 20:32:07 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ void	ft_cd(t_data *data, char **cmdargs)
 		path = ft_getenv("HOME", data->env);
 		if (!path)
 		{
-			write(2, "cd: Home not set\n", 18);
+			write(2, "cd: HOME not set\n", 17);
+			data->status = 1;
 			return ;
 		}
 	}
@@ -73,6 +74,7 @@ void	ft_cd(t_data *data, char **cmdargs)
 	if (chdir(path) != 0)
 	{
 		perror("cd");
+		data->status = 1;
 		return ;
 	}
 	getcwd(data->cwd, sizeof(data->cwd));
