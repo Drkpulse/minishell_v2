@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute1.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 20:11:45 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/01 19:42:48 by pda-silv         ###   ########.fr       */
+/*   Updated: 2025/06/01 18:30:25 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void	ft_handle_parent(t_data *data, int pipefd[2], int cmd_index)
 	if (cmd_index < data->cmd_count)
 		ft_safe_close(&pipefd[1]);
 	if (data->prev_pipe != -1)
-		ft_safe_close(&data->prev_pipe);fsda
+		ft_safe_close(&data->prev_pipe);
 	if (cmd_index < data->cmd_count)
 		data->prev_pipe = pipefd[0];
 }
