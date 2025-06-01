@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:24:50 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/01 18:36:18 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/01 18:41:23 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	ft_getpath(t_data *data, char *cmd)
 	if (!path_dirs || !path_env)
 	{
 		data->cmd_path = NULL;
-		return;
+		return ;
 	}
 	data->cmd_path = ft_findcmd(path_dirs, cmd);
 	ft_free_array((void **)path_dirs);

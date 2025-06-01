@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 14:27:48 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/01 18:31:23 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/01 18:44:00 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ void	ft_export(t_data *data, char **cmd_args)
 			ft_printf(C_RED"export: not a valid identifier: %s\n"RESET_COLOR,
 				cmd_args[i]);
 			i++;
-			continue;
+			continue ;
 		}
 		equal_sign = ft_strchr(cmd_args[i], '=');
 		if (equal_sign)
