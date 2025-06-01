@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 14:27:48 by joseferr          #+#    #+#             */
-/*   Updated: 2025/05/29 22:24:33 by pda-silv         ###   ########.fr       */
+/*   Updated: 2025/06/01 18:25:01 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,9 +107,31 @@ static void	process_var_no_equal(t_data *data, char *var)
 	add_env_variable(data, var, count);
 }
 
-/************************/
-/*Export Builtin Command*/
-/************************/
+static int	is_valid_identifier_char(char c, int first_char)
+{
+	if (first_char)
+		return (ft_isalpha(c) || c == '_');
+	return (ft_isalnum(c) || c == '_');
+}
+
+static int	check_identifier(char *arg)
+{
+	int	i;
+
+	if (!arg || !*arg)
+		return (0);
+	if (!is_valid_identifier_char(arg[0], 1))
+		return (0);
+	i = 1;
+	while (arg[i] && arg[i] != '=')
+	{
+		if (!is_valid_identifier_char(arg[i], 0))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 void	ft_export(t_data *data, char **cmd_args)
 {
 	int		i;
@@ -123,6 +145,13 @@ void	ft_export(t_data *data, char **cmd_args)
 	i = 1;
 	while (cmd_args[i])
 	{
+		if (!check_identifier(cmd_args[i]))
+		{
+			ft_printf(C_RED"export: not a valid identifier: %s\n"RESET_COLOR,
+				cmd_args[i]);
+			i++;
+			continue;
+		}
 		equal_sign = ft_strchr(cmd_args[i], '=');
 		if (equal_sign)
 			process_var_with_equal(data, cmd_args[i]);
