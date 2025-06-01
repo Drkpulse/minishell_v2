@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 14:27:48 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/01 20:32:07 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/01 21:25:00 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,11 @@ void	ft_cd(t_data *data, char **cmdargs)
 	getcwd(oldpwd, sizeof(oldpwd));
 	if (chdir(path) != 0)
 	{
-		perror("cd");
 		data->status = 1;
+		perror("cd");
 		return ;
 	}
 	getcwd(data->cwd, sizeof(data->cwd));
 	copy = ft_strdup(oldpwd);
 	ft_set_data_env(data, copy);
-	data->status = 0;
 }
