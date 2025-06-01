@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 11:39:13 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/06/01 19:35:11 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/01 22:01:49 by pda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,11 @@ int	main(int argc, char **argv, char **env)
 	(void)argv;
 	if (ft_initilaize(&data, env))
 		ft_shutdown(&data, NOK);
+    if (ft_disable_echoctl() == -1)
+    {
+        write(2, "minishell: failed to set terminal attributes\n", 44);
+        ft_shutdown(&data, NOK);
+    }
 	ft_setup_signals();
 	rl_bind_key('\t', &ft_tab_handler);
 	while (true)

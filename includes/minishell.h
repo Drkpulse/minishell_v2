@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 11:39:39 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/06/01 18:37:30 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/01 22:02:12 by pda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
+# include <termios.h>
 
 # include "libft/libft.h"
 
@@ -172,4 +173,6 @@ int		ft_replace_tabs(char *str);
 int		is_valid_identifier_char(char c, int first_char);
 int		check_identifier(char *arg);
 void	ft_setup_signals(void);
+int		ft_disable_echoctl(void);
+
 #endif
