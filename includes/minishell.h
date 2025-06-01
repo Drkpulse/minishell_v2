@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 11:39:39 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/05/29 22:31:03 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/01 18:37:30 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,6 @@ typedef struct s_data
 	int			heredoc_sync[MAX_PIPE_COUNT][2];
 }	t_data;
 
-extern int	g_signal;
-
 //	Parsing
 int		ft_tokenize_input(t_data *data, char *ptr, int count);
 char	*ft_parse_word(char **ptr, t_data *data);
@@ -171,4 +169,7 @@ void	ft_cleanup_execution(t_data *data);
 void	ft_safe_close(int *fd);
 void	write_error_message(char *var);
 int		ft_replace_tabs(char *str);
+int		is_valid_identifier_char(char c, int first_char);
+int		check_identifier(char *arg);
+void	ft_setup_signals(void);
 #endif

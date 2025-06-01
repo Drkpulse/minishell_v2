@@ -6,13 +6,11 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 11:39:13 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/06/01 18:03:43 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/01 18:39:16 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	g_signal = 0;
 
 /* Input first spa treatment                   */
 /* Closes the input if it ends with newline    */
@@ -62,20 +60,6 @@ static void	ft_iohandler(t_data *data)
 	ft_process_input(data);
 }
 
-static void	ft_sighandler(int signum, siginfo_t *info, void *context)
-{
-	(void)info;
-	(void)context;
-	g_signal = signum;
-	if (signum == SIGINT)
-	{
-		write(1, "\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
-}
-
 /* Adds a tab character when TAB is pressed instead of autocompletion */
 static int	ft_tab_handler(int count, int key)
 {
@@ -86,25 +70,6 @@ static int	ft_tab_handler(int count, int key)
 		return (0);
 	}
 	return (1);
-}
-
-/* Should start signal handling before running loop */
-
-static void	ft_setup_signals(void)
-{
-	struct sigaction	sa;
-
-	sigemptyset(&sa.sa_mask);
-	sigaddset(&sa.sa_mask, SIGINT);
-	sigaddset(&sa.sa_mask, SIGQUIT);
-	sigaddset(&sa.sa_mask, SIGPIPE);
-	sa.sa_sigaction = &ft_sighandler;
-	sa.sa_flags = SA_SIGINFO;
-	sigaction(SIGINT, &sa, NULL);
-	sa.sa_handler = SIG_IGN;
-	sa.sa_flags = 0;
-	sigaction(SIGQUIT, &sa, NULL);
-	sigaction(SIGPIPE, &sa, NULL);
 }
 
 int	main(int argc, char **argv, char **env)

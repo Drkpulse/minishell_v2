@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:24:50 by joseferr          #+#    #+#             */
-/*   Updated: 2025/05/31 14:03:17 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/01 18:36:18 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,32 +57,18 @@ void	ft_getpath(t_data *data, char *cmd)
 	char	**path_dirs;
 	char	*path_env;
 
-	if (!cmd || cmd[0] == '\0')
-	{
-		data->cmd_path = NULL;
-		return;
-	}
-	if (ft_is_builtin(cmd))
-	{
-		data->cmd_path = NULL;
-		return;
-	}
+	data->cmd_path = NULL;
 	if (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] == '/'))
 	{
 		if (access(cmd, F_OK | X_OK) == 0)
 			data->cmd_path = ft_strdup(cmd);
 		else
 			data->cmd_path = NULL;
-		return;
+		return ;
 	}
 	path_env = ft_getenv("PATH", data->env);
-	if (!path_env)
-	{
-		data->cmd_path = NULL;
-		return;
-	}
 	path_dirs = ft_split(path_env, ':');
-	if (!path_dirs)
+	if (!path_dirs || !path_env)
 	{
 		data->cmd_path = NULL;
 		return;
