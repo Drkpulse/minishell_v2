@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 14:48:25 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/04/22 21:35:57 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/01 20:13:42 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,15 @@ void	ft_get_delim_buf(t_command *command, char *delim)
 	if (!temp)
 		return ;
 	buffer = ft_strdup(" > "RESET_COLOR);
+	if (!buffer)
+	{
+		free(temp);
+		return ;
+	}
 	while (1)
 	{
-		new = readline(buffer);
+		ft_putstr_fd(buffer, STDOUT_FILENO);
+		new = readline(NULL);
 		if (!new)
 		{
 			if (ft_strncmp(delim, "EOF", 4) != 0)
