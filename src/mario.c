@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 13:30:00 by joseferr          #+#    #+#             */
-/*   Updated: 2025/05/31 14:28:43 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/01 21:44:28 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,14 @@ void	ft_wait_children(t_data *data, pid_t *pids)
 void	ft_handle_heredoc(t_data *data, t_command cmd, int cmd_index)
 {
 	int	heredoc_pipe[2];
+	int	write_result;
 
 	ft_get_delim_buf(&cmd, cmd.redir.delim);
 	if (cmd_index < data->cmd_count)
 	{
-		write(data->heredoc_sync[cmd_index][1], "", 1);
+		write_result = write(data->heredoc_sync[cmd_index][1], "", 1);
+		if (write_result == -1)
+			perror("write to heredoc sync");
 		close(data->heredoc_sync[cmd_index][1]);
 	}
 	if (cmd.redir.delim_buf)
@@ -63,13 +66,18 @@ void	ft_handle_heredoc(t_data *data, t_command cmd, int cmd_index)
 		if (pipe(heredoc_pipe) == -1)
 		{
 			perror("pipe");
+			free(cmd.redir.delim_buf);
 			return ;
 		}
-		write(heredoc_pipe[1], cmd.redir.delim_buf,
-			ft_strlen(cmd.redir.delim_buf));
+		write_result = write(heredoc_pipe[1], cmd.redir.delim_buf,
+				ft_strlen(cmd.redir.delim_buf));
+		if (write_result == -1)
+			perror("write to heredoc pipe");
 		close(heredoc_pipe[1]);
-		dup2(heredoc_pipe[0], STDIN_FILENO);
+		if (dup2(heredoc_pipe[0], STDIN_FILENO) == -1)
+			perror("dup2 in heredoc");
 		close(heredoc_pipe[0]);
+		free(cmd.redir.delim_buf);
 	}
 }
 
@@ -82,9 +90,18 @@ void	ft_setup_pipes(int pipefd[2])
 	}
 }
 
+void	ft_safe_pipe(int pipefd[2], t_data *data, char **cmd_args)
+{
+	if (pipe(pipefd) == -1)
+	{
+		perror("pipe");
+		ft_free_cmd(data, cmd_args);
+		exit(EXIT_FAILURE);
+	}
+}
+
 void	ft_pipe_error(t_data *data, char **cmd_args)
 {
 	perror("fork");
 	ft_free_cmd(data, cmd_args);
-	return ;
 }

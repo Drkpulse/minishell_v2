@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 19:19:50 by joseferr          #+#    #+#             */
-/*   Updated: 2025/04/22 21:12:44 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/01 22:21:57 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ static void	handle_redirection(t_command *command, int *i)
 	{
 		(*i)++;
 		command->redir.delim = ft_strdup(command->tokens[*i].value);
-		printf("delim: %s\n", command->redir.delim);
 	}
 	else
 	{

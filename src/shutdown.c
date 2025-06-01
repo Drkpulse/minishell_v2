@@ -6,11 +6,12 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 14:37:51 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/05/29 21:32:22 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/01 22:05:50 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 
 void	ft_free_tokens(t_data *data)
 {
@@ -51,6 +52,7 @@ void	ft_free_env_array(t_data *data)
 	ft_free((void **)&data->env);
 }
 
+
 void	ft_shutdown(t_data **data, int retval)
 {
 	if (*data)
@@ -59,8 +61,7 @@ void	ft_shutdown(t_data **data, int retval)
 		if ((*data)->input)
 			ft_free((void **)&((*data)->input));
 		ft_free_tokens(*data);
-		if ((*data)->env)
-			ft_free_array((void **)(*data)->env);
+		ft_free_env_array(*data);
 		ft_free((void **)data);
 	}
 	exit(retval);

@@ -6,11 +6,41 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 20:11:45 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/01 19:25:05 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/01 22:39:17 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/* ************************************************************************** */
+/*                                                                            */
+/*   Clean up command resources before shutdown                              */
+/*   Safely frees redirection and command-related memory                     */
+/*   Follows the pattern of other memory management functions                */
+/*   Ensures no memory leaks or double frees occur                           */
+/* ************************************************************************** */
+static void	ft_cleanup_command_resources(t_data *data)
+{
+    int	i;
+
+    i = 0;
+    while (i <= data->cmd_count)
+    {
+        if (data->commands[i].redir.delim)
+        {
+            ft_free((void **)&data->commands[i].redir.delim);
+        }
+        if (data->commands[i].redir.delim_buf)
+        {
+            ft_free((void **)&data->commands[i].redir.delim_buf);
+        }
+		if (data->commands[i].redir.append)
+        {
+            ft_free((void **)&data->commands[i].redir.append);
+        }
+        i++;
+    }
+}
 
 /* ************************************************************************** */
 /*                                                                            */
@@ -33,11 +63,11 @@ void	ft_execute_command(t_data *data, char **cmd_args, t_token_type type)
 		if (data->cmd_path == NULL)
 		{
 			ft_printf(C_RED"%s: Command not found\n"RESET_ALL, cmd_args[0]);
-			ft_free_array((void **)cmd_args);
 			ft_free((void **)&data->cmd_path);
-			data->status = 127;
-			ft_cleanup_execution(data);
-			exit(EXIT_FAILURE);
+			ft_free_array((void **)cmd_args);
+			ft_free_env_array(data);
+			ft_cleanup_command_resources(data);
+			ft_shutdown(&data, 127);
 		}
 		execve(data->cmd_path, cmd_args, data->env);
 		perror("execve");
@@ -52,7 +82,6 @@ static void	ft_prepare_command(t_data *data, int cmd_index, char ***cmd_args)
 {
 	*cmd_args = ft_tokens_to_args(&data->commands[cmd_index]);
 	ft_getpath(data, *cmd_args[0]);
-	printf("path: %s\n", data->cmd_path);
 }
 
 /* ************************************************************************** */

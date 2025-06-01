@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 13:30:00 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/01 18:30:33 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/01 21:44:42 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,9 @@ void	ft_handle_pipes(t_data *data, int pipefd[2],
 	if (cmd_index > 0 && data->prev_pipe != -1)
 		ft_handle_input(data, command, cmd_index);
 	if (command.redir.delim)
+	{
 		ft_handle_heredoc(data, command, cmd_index);
+	}
 	ft_handle_output(data, command, pipefd, cmd_index);
 	signal(SIGPIPE, SIG_DFL);
 	if (cmd_index < data->cmd_count)
