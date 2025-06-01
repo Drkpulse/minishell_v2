@@ -6,7 +6,7 @@
 /*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 14:37:51 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/06/01 22:01:31 by pda-silv         ###   ########.fr       */
+/*   Updated: 2025/06/01 22:27:51 by pda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ static void	ft_sighandler(int signum, siginfo_t *info, void *context)
 	}
     if (signum == SIGQUIT)
     {
-        if (rl_line_buffer && rl_line_buffer[0] != '\0')
-        {
-            write(1, "Quit (core dumped)\n", 19);
-            exit(131);
-        }
         rl_on_new_line();
         rl_redisplay();
+        if (rl_line_buffer && rl_line_buffer[0] != '\0')
+        {
+            write(1, "\nQuit (core dumped)\n", 20);
+            exit(131);
+        }
     }
 }
 
