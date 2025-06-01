@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   luigi.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 13:30:00 by joseferr          #+#    #+#             */
-/*   Updated: 2025/05/29 22:23:46 by pda-silv         ###   ########.fr       */
+/*   Updated: 2025/06/01 18:03:07 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,18 +63,25 @@ static void	ft_handle_output(t_data *data, t_command cmd,
 /*   Ensures proper synchronization in the pipeline                          */
 /* ************************************************************************** */
 void	ft_handle_pipes(t_data *data, int pipefd[2],
-	t_command command, int cmd_index)
+    t_command command, int cmd_index)
 {
-	if (cmd_index > 0 && data->commands[cmd_index - 1].redir.delim)
-	{
-		read(data->heredoc_sync[cmd_index - 1][0], "", 1);
-		close(data->heredoc_sync[cmd_index - 1][0]);
-	}
-	else if (cmd_index > 0)
-		close(data->heredoc_sync[cmd_index - 1][0]);
-	if (command.redir.delim)
-		ft_handle_heredoc(data, command, cmd_index);
-	else
-		ft_handle_input(data, command, cmd_index);
-	ft_handle_output(data, command, pipefd, cmd_index);
+    int	i;
+
+    i = 0;
+    while (i < data->cmd_count)
+    {
+        if (i != cmd_index && (data->heredoc_sync[i][0] >= 0))
+            close(data->heredoc_sync[i][0]);
+        if (data->heredoc_sync[i][1] >= 0)
+            close(data->heredoc_sync[i][1]);
+        i++;
+    }
+    if (cmd_index > 0 && data->prev_pipe != -1)
+        ft_handle_input(data, command, cmd_index);
+    if (command.redir.delim)
+        ft_handle_heredoc(data, command, cmd_index);
+    ft_handle_output(data, command, pipefd, cmd_index);
+    signal(SIGPIPE, SIG_DFL);
+    if (cmd_index < data->cmd_count)
+        close(pipefd[0]);
 }

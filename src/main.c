@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 11:39:13 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/05/29 22:31:38 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/01 18:03:43 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,24 +90,32 @@ static int	ft_tab_handler(int count, int key)
 
 /* Should start signal handling before running loop */
 
-int	main(int argc, char **argv, char **env)
+static void	ft_setup_signals(void)
 {
 	struct sigaction	sa;
-	t_data				*data;
 
-	(void)argc;
-	(void)argv;
-	if (ft_initilaize(&data, env))
-		ft_shutdown(&data, NOK);
 	sigemptyset(&sa.sa_mask);
 	sigaddset(&sa.sa_mask, SIGINT);
 	sigaddset(&sa.sa_mask, SIGQUIT);
+	sigaddset(&sa.sa_mask, SIGPIPE);
 	sa.sa_sigaction = &ft_sighandler;
 	sa.sa_flags = SA_SIGINFO;
 	sigaction(SIGINT, &sa, NULL);
 	sa.sa_handler = SIG_IGN;
 	sa.sa_flags = 0;
 	sigaction(SIGQUIT, &sa, NULL);
+	sigaction(SIGPIPE, &sa, NULL);
+}
+
+int	main(int argc, char **argv, char **env)
+{
+	t_data	*data;
+
+	(void)argc;
+	(void)argv;
+	if (ft_initilaize(&data, env))
+		ft_shutdown(&data, NOK);
+	ft_setup_signals();
 	rl_bind_key('\t', &ft_tab_handler);
 	while (true)
 		ft_iohandler(data);
