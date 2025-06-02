@@ -1,8 +1,0 @@
-bin
-docs
-includes
-logs
-Makefile
-ola.txt
-README.md
-src

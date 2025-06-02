@@ -6,7 +6,7 @@
 /*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 11:39:13 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/06/01 22:01:49 by pda-silv         ###   ########.fr       */
+/*   Updated: 2025/06/02 20:02:50 by pda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static void	ft_iohandler(t_data *data)
 {
 	char	prompt[MAX_CWD_SIZE + 20];
 
+    ft_set_prompt_signals();
 	if (!getcwd(data->cwd, sizeof(data->cwd)))
 	{
 		perror("getcwd");
@@ -86,7 +87,6 @@ int	main(int argc, char **argv, char **env)
         write(2, "minishell: failed to set terminal attributes\n", 44);
         ft_shutdown(&data, NOK);
     }
-	ft_setup_signals();
 	rl_bind_key('\t', &ft_tab_handler);
 	while (true)
 		ft_iohandler(data);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 20:11:45 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/01 22:39:17 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/02 19:56:51 by pda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,7 @@ void	ft_execute(t_data *data)
 	int		cmd_index;
 	char	**cmd_args;
 
+    ft_set_exec_signals();
 	ft_setup_heredoc_sync(data);
 	cmd_index = -1;
 	data->pids = malloc((data->cmd_count + 1) * sizeof(pid_t));
