@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 13:30:00 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/01 21:44:28 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/02 21:53:44 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,31 @@
 
 void	ft_wait_children(t_data *data, pid_t *pids)
 {
-	int	i;
-	int	status;
+    int	i;
+    int	status;
 
-	i = 0;
-	if (pids)
-	{
-		while (i <= data->cmd_count)
-		{
-			if (pids[i] > 0)
-			{
-				waitpid(pids[i], &status, 0);
-				if (i == data->cmd_count)
-				{
-					if (status & 0x7F)
-						data->status = 128 + (status & 0x7F);
-					else
-						data->status = (status >> 8) & 0xFF;
-				}
-			}
-			i++;
-		}
-		free(pids);
-	}
-	if (data->prev_pipe >= 0)
-		ft_safe_close(&data->prev_pipe);
+    i = 0;
+    if (pids)
+    {
+        while (i <= data->cmd_count)
+        {
+            if (pids[i] > 0)
+            {
+                waitpid(pids[i], &status, 0);
+                if (i == data->cmd_count) // Last command's status
+                {
+                    if (WIFSIGNALED(status))
+                        data->status = 128 + WTERMSIG(status);
+                    else if (WIFEXITED(status))
+                        data->status = WEXITSTATUS(status);
+                }
+            }
+            i++;
+        }
+        free(pids);
+    }
+    if (data->prev_pipe >= 0)
+        ft_safe_close(&data->prev_pipe);
 }
 
 /* ************************************************************************** */

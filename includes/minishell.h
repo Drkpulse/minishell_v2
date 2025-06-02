@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 11:39:39 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/06/02 20:04:00 by pda-silv         ###   ########.fr       */
+/*   Updated: 2025/06/02 21:46:43 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void	ft_export(t_data *data, char **cmd_args);
 void	ft_unset(t_data *data, char **cmd_args);
 void	ft_cd(t_data *data, char **cmd_args);
 void	ft_echo(char **cmd_args);
-void	ft_pwd(t_data *data);
+void	ft_pwd(t_data *data, char **cmd_args);
 void	ft_env(t_data *data);
 
 //	Pathing

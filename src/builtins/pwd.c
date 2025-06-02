@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 14:27:48 by joseferr          #+#    #+#             */
-/*   Updated: 2025/04/22 21:36:22 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/02 21:50:01 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,13 @@
 /*********************/
 /*PWD Builtin Command*/
 /*********************/
-void	ft_pwd(t_data *data)
+void	ft_pwd(t_data *data, char **cmd_args)
 {
-	ft_printf("%s\n", data->cwd);
+	if (!cmd_args[1])
+		ft_printf("%s\n", data->cwd);
+	else
+	{
+		ft_putstr_fd("pwd: too many arguments\n", STDERR_FILENO);
+		data->status = 1;
+	}
 }

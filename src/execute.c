@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 20:11:45 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/02 19:56:51 by pda-silv         ###   ########.fr       */
+/*   Updated: 2025/06/02 21:40:10 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ void	ft_cleanup_execution(t_data *data)
 		ft_close_redirect_fds(&data->commands[i].redir);
 		i++;
 	}
+	ft_cleanup_command_resources(data);
 	data->pids = NULL;
 	ft_free_tokens(data);
 }
