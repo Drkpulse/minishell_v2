@@ -39,6 +39,8 @@ static void	handle_redirection(t_command *command, int *i)
 	else if (command->tokens[*i].type == REDIR_DELIM)
 	{
 		(*i)++;
+		if (command->redir.delim)
+			free(command->redir.delim);
 		command->redir.delim = ft_strdup(command->tokens[*i].value);
 	}
 	else

@@ -56,7 +56,8 @@ typedef enum e_token_type
 	REDIR_IN,
 	REDIR_OUT,
 	REDIR_DELIM,
-	REDIR_APPEND
+	REDIR_APPEND,
+	ERROR
 }	t_token_type;
 
 typedef struct s_redir

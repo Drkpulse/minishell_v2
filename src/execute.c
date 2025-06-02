@@ -34,10 +34,6 @@ static void	ft_cleanup_command_resources(t_data *data)
         {
             ft_free((void **)&data->commands[i].redir.delim_buf);
         }
-		if (data->commands[i].redir.append)
-        {
-            ft_free((void **)&data->commands[i].redir.append);
-        }
         i++;
     }
 }

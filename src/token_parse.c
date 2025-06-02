@@ -37,18 +37,25 @@ static void	ft_parse_output_redir(char **ptr, t_token *token)
 
 static void	ft_parse_input_redir(char **ptr, t_token *token)
 {
-	if (*(*ptr + 1) == '<')
-	{
-		token->type = REDIR_DELIM;
-		token->value = ft_strdup("<<");
-		(*ptr) += 2;
-	}
-	else
-	{
-		token->type = REDIR_IN;
-		token->value = ft_strdup("<");
-		(*ptr)++;
-	}
+    if (*(*ptr + 1) == '<')
+    {
+        token->type = REDIR_DELIM;
+        token->value = ft_strdup("<<");
+        (*ptr) += 2;
+        *ptr = ft_skip_whitespace(*ptr);
+        if (!**ptr || **ptr == '|' || **ptr == '>' || **ptr == '<')
+        {
+            ft_printf(C_RED"minishell: syntax error near unexpected token `newline'\n"RESET_ALL);
+            ft_free((void **)&token->value);
+            token->type = ERROR;  // Set invalid token type to signal error
+        }
+    }
+    else
+    {
+        token->type = REDIR_IN;
+        token->value = ft_strdup("<");
+        (*ptr)++;
+    }
 }
 
 static t_token	ft_parse_redirection(char **ptr)
@@ -59,7 +66,11 @@ static t_token	ft_parse_redirection(char **ptr)
 	if (**ptr == '>')
 		ft_parse_output_redir(ptr, &token);
 	else if (**ptr == '<')
-		ft_parse_input_redir(ptr, &token);
+    {
+        ft_parse_input_redir(ptr, &token);
+        if (token.type == ERROR)  // Check if there was an error
+            return token;      // Return early with error token
+    }
 	return (token);
 }
 

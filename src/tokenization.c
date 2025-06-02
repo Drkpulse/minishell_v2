@@ -59,6 +59,11 @@ int	ft_tokenize_input(t_data *data, char *ptr, int count)
 	while (*ptr)
 	{
 		token = ft_parse_token(&ptr, data);
+		 if (token.type == ERROR)  // Check for invalid token type
+        {
+            data->status = 2;  // Set appropriate error status
+            return (1);  // Return indicating an error
+        }
 		if (token.value)
 		{
 			if (token.type == PIPE)
