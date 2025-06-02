@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   luigi.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 13:30:00 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/02 21:32:48 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/02 22:08:19 by pda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,17 +76,12 @@ void	ft_handle_pipes(t_data *data, int pipefd[2],
 			close(data->heredoc_sync[i][1]);
 		i++;
 	}
-	// Always check for input redirection, regardless of position in pipeline
 	if (command.redir.in_fd != STDIN_FILENO)
 		ft_handle_input(data, command, cmd_index);
-	// Only use pipe input for non-first commands that don't have explicit redirection
 	else if (cmd_index > 0 && data->prev_pipe != -1)
 		ft_handle_input(data, command, cmd_index);
-
 	if (command.redir.delim)
-	{
 		ft_handle_heredoc(data, command, cmd_index);
-	}
 	ft_handle_output(data, command, pipefd, cmd_index);
 	signal(SIGPIPE, SIG_DFL);
 	if (cmd_index < data->cmd_count)

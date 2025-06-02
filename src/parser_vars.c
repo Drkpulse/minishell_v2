@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_vars.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 19:19:50 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/02 21:53:36 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/02 22:17:33 by pda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,33 +71,31 @@ static char	*handle_alphanum_var(char *word, int *i, t_data *data, char *result)
  */
 static char	*handle_variable(char *word, int *i, t_data *data, char *result)
 {
-    char	*var_value;
-    char	*tmp;
+	char	*var_value;
+	char	*tmp;
 
-    (*i)++;
-    if (!word[*i])
-        return (ft_strjoin(result, "$"));
-    if (word[*i] == '?')
-    {
-        // Convert the status code to a string
-        var_value = ft_itoa(data->status);
-        if (!var_value)
-            return (NULL);
-        // Join the status code to the result
-        tmp = ft_strjoin(result, var_value);
-        free(result);
-        free(var_value);
-        (*i)++;
-        return (tmp);
-    }
-    if (ft_isalnum(word[*i]) || word[*i] == '_')
-        return (handle_alphanum_var(word, i, data, result));
-    if (word[*i] == '\'' || word[*i] == '\"')
-        return (ft_strjoin(result, "$"));
-    tmp = ft_strjoin(result, "$");
-    free(result);
-    result = tmp;
-    return (append_char(result, word[(*i)++]));
+	(*i)++;
+	if (!word[*i])
+		return (ft_strjoin(result, "$"));
+	if (word[*i] == '?')
+	{
+		var_value = ft_itoa(data->status);
+		if (!var_value)
+			return (NULL);
+		tmp = ft_strjoin(result, var_value);
+		free(result);
+		free(var_value);
+		(*i)++;
+		return (tmp);
+	}
+	if (ft_isalnum(word[*i]) || word[*i] == '_')
+		return (handle_alphanum_var(word, i, data, result));
+	if (word[*i] == '\'' || word[*i] == '\"')
+		return (ft_strjoin(result, "$"));
+	tmp = ft_strjoin(result, "$");
+	free(result);
+	result = tmp;
+	return (append_char(result, word[(*i)++]));
 }
 
 /* Function to expand variables in a string

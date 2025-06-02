@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 14:27:48 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/01 21:34:14 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/02 22:20:37 by pda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	ft_exit(t_data *data, char **cmd_args)
 	}
 	if (!is_numeric_arg(cmd_args[1], &exit_status))
 	{
-		handle_exit_error( cmd_args[1]);
+		handle_exit_error(cmd_args[1]);
 		data->status = 1;
 		return ;
 	}

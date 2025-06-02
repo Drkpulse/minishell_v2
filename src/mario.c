@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mario.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 13:30:00 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/02 22:05:39 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/02 22:17:59 by pda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ void	ft_wait_children(t_data *data, pid_t *pids)
 		{
 			if (pids[i] > 0)
 			{
-				status = 0;  /* Initialize status before using it */
+				status = 0;
 				waitpid(pids[i], &status, 0);
-				if (i == data->cmd_count) // Last command's status
+				if (i == data->cmd_count)
 				{
 					if (WIFSIGNALED(status))
 						data->status = 128 + WTERMSIG(status);

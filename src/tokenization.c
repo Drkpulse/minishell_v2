@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 10:23:36 by joseferr          #+#    #+#             */
-/*   Updated: 2025/05/29 21:55:51 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/02 22:19:28 by pda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,11 @@ int	ft_tokenize_input(t_data *data, char *ptr, int count)
 	while (*ptr)
 	{
 		token = ft_parse_token(&ptr, data);
-		 if (token.type == ERROR)  // Check for invalid token type
-        {
-            data->status = 2;  // Set appropriate error status
-            return (1);  // Return indicating an error
-        }
+		if (token.type == ERROR)
+		{
+			data->status = 2;
+			return (1);
+		}
 		if (token.value)
 		{
 			if (token.type == PIPE)
