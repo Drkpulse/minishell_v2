@@ -6,7 +6,7 @@
 /*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 20:11:45 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/02 22:19:49 by pda-silv         ###   ########.fr       */
+/*   Updated: 2025/06/03 19:36:33 by pda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,6 @@ void	ft_execute(t_data *data)
 	int		cmd_index;
 	char	**cmd_args;
 
-	ft_set_exec_signals();
 	ft_setup_heredoc_sync(data);
 	cmd_index = -1;
 	data->pids = malloc((data->cmd_count + 1) * sizeof(pid_t));
