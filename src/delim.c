@@ -58,20 +58,13 @@ void	ft_get_delim_buf(t_command *command, char *delim)
 	temp = ft_strdup("");
 	if (!temp)
 		return ;
-	buffer = ft_strdup(" > "RESET_COLOR);
-	if (!buffer)
-	{
-		free(temp);
-		return ;
-	}
+	buffer = ft_strdup(C_BLUE" > "RESET_COLOR);
 	while (1)
 	{
-		ft_putstr_fd(buffer, STDOUT_FILENO);
-		new = readline(NULL);
+		new = readline(buffer);
 		if (!new)
 		{
-			if (ft_strncmp(delim, "EOF", 4) != 0)
-				ft_process_eof(delim);
+			ft_process_eof(delim);
 			break ;
 		}
 		if (ft_check_delimiter(new, delim))
@@ -79,6 +72,6 @@ void	ft_get_delim_buf(t_command *command, char *delim)
 		ft_append_line(&temp, new);
 		free(new);
 	}
-	command->redir.delim_buf = temp;
 	free(buffer);
+	command->redir.delim_buf = temp;
 }
