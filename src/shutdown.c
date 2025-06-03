@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shutdown.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 14:37:51 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/06/02 22:16:55 by pda-silv         ###   ########.fr       */
+/*   Updated: 2025/06/03 19:54:00 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,13 @@ void	ft_shutdown(t_data **data, int retval)
 		ft_free((void **)data);
 	}
 	exit(retval);
+}
+
+void	ft_godark(t_data *data, t_data *cmd_args)
+{
+	ft_free_cmd(data, cmd_args);
+	ft_cleanup_execution(data);
+	ft_safe_close(&data->original_stdin);
+	ft_safe_close(&data->original_stdout);
+	ft_shutdown(&data, (unsigned char)data->status);
 }

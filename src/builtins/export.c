@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 14:27:48 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/01 18:44:00 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/03 19:57:03 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,15 +135,13 @@ void	ft_export(t_data *data, char **cmd_args)
 		i++;
 	}
 }
-void	ft_update_shlvl(t_data *data)
+
+static char	*create_shlvl_var(char *shlvl_str)
 {
-	char	*shlvl_str;
 	int		shlvl;
 	char	*new_shlvl;
 	char	*var;
-	int		count;
 
-	shlvl_str = ft_getenv("SHLVL", data->env);
 	if (!shlvl_str || !*shlvl_str)
 		shlvl = 0;
 	else
@@ -151,9 +149,20 @@ void	ft_update_shlvl(t_data *data)
 	shlvl++;
 	new_shlvl = ft_itoa(shlvl);
 	if (!new_shlvl)
-		return ;
+		return (NULL);
 	var = ft_strjoin("SHLVL=", new_shlvl);
 	free(new_shlvl);
+	return (var);
+}
+
+void	ft_update_shlvl(t_data *data)
+{
+	char	*shlvl_str;
+	char	*var;
+	int		count;
+
+	shlvl_str = ft_getenv("SHLVL", data->env);
+	var = create_shlvl_var(shlvl_str);
 	if (!var)
 		return ;
 	if (var_exists(data->env, "SHLVL"))

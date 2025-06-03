@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 14:27:48 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/02 21:55:32 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/03 19:58:13 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,10 @@ void	ft_set_data_env(t_data *data, char *OLDPWD)
 }
 
 /********************/
-/*CD Builtin Command*/
+/*Get Path For CD*/
 /********************/
-void	ft_cd(t_data *data, char **cmdargs)
+static char	*get_cd_path(t_data *data, char **cmdargs)
 {
-	char	oldpwd[MAX_CWD_SIZE];
-	char	*copy;
 	char	*path;
 
 	if (!cmdargs[1])
@@ -65,11 +63,26 @@ void	ft_cd(t_data *data, char **cmdargs)
 		{
 			write(2, "cd: HOME not set\n", 17);
 			data->status = 1;
-			return ;
+			return (NULL);
 		}
 	}
 	else
 		path = cmdargs[1];
+	return (path);
+}
+
+/********************/
+/*CD Builtin Command*/
+/********************/
+void	ft_cd(t_data *data, char **cmdargs)
+{
+	char	oldpwd[MAX_CWD_SIZE];
+	char	*copy;
+	char	*path;
+
+	path = get_cd_path(data, cmdargs);
+	if (!path)
+		return ;
 	getcwd(oldpwd, sizeof(oldpwd));
 	if (chdir(path) != 0)
 	{
