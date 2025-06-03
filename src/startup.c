@@ -64,5 +64,6 @@ int	ft_initilaize(t_data **data, char **env)
 	(*data)->env = ft_envdup(env);
 	if (!(*data)->env)
 		return (NOK);
+	ft_update_shlvl(*data);
 	return (OK);
 }

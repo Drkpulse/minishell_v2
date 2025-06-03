@@ -135,3 +135,35 @@ void	ft_export(t_data *data, char **cmd_args)
 		i++;
 	}
 }
+void	ft_update_shlvl(t_data *data)
+{
+	char	*shlvl_str;
+	int		shlvl;
+	char	*new_shlvl;
+	char	*var;
+	int		count;
+
+	shlvl_str = ft_getenv("SHLVL", data->env);
+	if (!shlvl_str || !*shlvl_str)
+		shlvl = 0;
+	else
+		shlvl = ft_atoi(shlvl_str);
+	shlvl++;
+	new_shlvl = ft_itoa(shlvl);
+	if (!new_shlvl)
+		return ;
+	var = ft_strjoin("SHLVL=", new_shlvl);
+	free(new_shlvl);
+	if (!var)
+		return ;
+	if (var_exists(data->env, "SHLVL"))
+		process_var_with_equal(data, var);
+	else
+	{
+		count = 0;
+		while (data->env[count])
+			count++;
+		add_env_variable(data, var, count);
+	}
+	free(var);
+}

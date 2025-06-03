@@ -91,3 +91,21 @@ void	ft_set_exec_signals(void)
 	sa.sa_flags = 0;
 	sigaction(SIGPIPE, &sa, NULL);
 }
+
+/* ************************************************************************** */
+/*                                                                            */
+/*   Sets signal handlers for child processes                                */
+/*   Restores default behavior for signals in child processes                */
+/*   Ensures signal handlers work properly for command execution             */
+/* ************************************************************************** */
+void	ft_set_child_signals(void)
+{
+	struct sigaction	sa;
+
+	sigemptyset(&sa.sa_mask);
+	sa.sa_handler = SIG_DFL;
+	sa.sa_flags = 0;
+	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
+	sigaction(SIGPIPE, &sa, NULL);
+}

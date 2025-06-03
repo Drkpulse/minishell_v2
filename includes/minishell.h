@@ -177,5 +177,7 @@ void	ft_free_env_array(t_data *data);
 int		ft_disable_echoctl(void);
 void	ft_set_exec_signals(void);
 void	ft_set_prompt_signals(void);
+void	ft_set_child_signals(void);
+void	ft_update_shlvl(t_data *data);
 
 #endif

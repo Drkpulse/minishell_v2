@@ -12,9 +12,18 @@
 
 #include "minishell.h"
 
+/* ************************************************************************** */
+/*                                                                            */
+/*   Creates a child process to execute a command                            */
+/*   Sets up pipes for communication between processes                       */
+/*   Configures signal handling for child processes                          */
+/*   Handles execution of commands in the child process                      */
+/* ************************************************************************** */
 static void	ft_create_child_process(t_data *data, int pipefd[2],
 	int cmd_index, char **cmd_args)
 {
+	struct sigaction	sa;
+
 	if (cmd_index < data->cmd_count)
 		ft_setup_pipes(pipefd);
 	data->pids[cmd_index] = fork();
@@ -22,10 +31,19 @@ static void	ft_create_child_process(t_data *data, int pipefd[2],
 		ft_pipe_error(data, cmd_args);
 	else if (data->pids[cmd_index] == 0)
 	{
+		ft_set_child_signals();
 		ft_handle_pipes(data, pipefd, data->commands[cmd_index], cmd_index);
 		ft_execute_command(data, cmd_args,
 			data->commands[cmd_index].tokens->type);
 		exit(EXIT_FAILURE);
+	}
+	else
+	{
+		sigemptyset(&sa.sa_mask);
+		sa.sa_handler = SIG_IGN;
+		sa.sa_flags = 0;
+		sigaction(SIGINT, &sa, NULL);
+		sigaction(SIGQUIT, &sa, NULL);
 	}
 }
 
