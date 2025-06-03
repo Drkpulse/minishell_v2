@@ -6,11 +6,19 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 13:30:00 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/03 20:17:16 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/03 20:20:55 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	ft_set_exit_status(t_data *data, int status)
+{
+	if (WIFSIGNALED(status))
+		data->status = 128 + WTERMSIG(status);
+	else if (WIFEXITED(status))
+		data->status = WEXITSTATUS(status);
+}
 
 void	ft_wait_children(t_data *data, pid_t *pids)
 {
@@ -18,26 +26,24 @@ void	ft_wait_children(t_data *data, pid_t *pids)
 	int	status;
 
 	i = 0;
-	if (pids)
+	if (!pids)
 	{
-		while (i <= data->cmd_count)
-		{
-			if (pids[i] > 0)
-			{
-				status = 0;
-				waitpid(pids[i], &status, 0);
-				if (i == data->cmd_count)
-				{
-					if (WIFSIGNALED(status))
-						data->status = 128 + WTERMSIG(status);
-					else if (WIFEXITED(status))
-						data->status = WEXITSTATUS(status);
-				}
-			}
-			i++;
-		}
-		free(pids);
+		if (data->prev_pipe >= 0)
+			ft_safe_close(&data->prev_pipe);
+		return ;
 	}
+	while (i <= data->cmd_count)
+	{
+		if (pids[i] > 0)
+		{
+			status = 0;
+			waitpid(pids[i], &status, 0);
+			if (i == data->cmd_count)
+				ft_set_exit_status(data, status);
+		}
+		i++;
+	}
+	free(pids);
 	if (data->prev_pipe >= 0)
 		ft_safe_close(&data->prev_pipe);
 }

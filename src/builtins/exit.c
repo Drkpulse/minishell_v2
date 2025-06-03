@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 14:27:48 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/03 19:55:36 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/03 20:23:24 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,11 @@ void	ft_exit(t_data *data, char **cmd_args)
 		ft_printf("exit\n");
 	if (!cmd_args[1])
 	{
-		ft_godark(data, cmd_args);
+		ft_free_cmd(data, cmd_args);
+	ft_cleanup_execution(data);
+	ft_safe_close(&data->original_stdin);
+	ft_safe_close(&data->original_stdout);
+	ft_shutdown(&data, (unsigned char)data->status);
 	}
 	if (!is_numeric_arg(cmd_args[1], &exit_status))
 	{
@@ -71,5 +75,9 @@ void	ft_exit(t_data *data, char **cmd_args)
 		data->status = 1;
 		return ;
 	}
-	ft_godark(data, cmd_args);
+	ft_free_cmd(data, cmd_args);
+	ft_cleanup_execution(data);
+	ft_safe_close(&data->original_stdin);
+	ft_safe_close(&data->original_stdout);
+	ft_shutdown(&data, (unsigned char)data->status);
 }
