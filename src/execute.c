@@ -6,7 +6,7 @@
 /*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 20:11:45 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/03 20:33:42 by pda-silv         ###   ########.fr       */
+/*   Updated: 2025/06/03 20:28:39 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,15 @@ void	ft_cleanup_command_resources(t_data *data)
 	}
 }
 
+void	ft_command_not_found(t_data *data, char **cmd_args)
+{
+	ft_printf(C_RED"%s: Command not found\n"RESET_ALL, cmd_args[0]);
+	ft_free((void **)&data->cmd_path);
+	ft_free_array((void **)cmd_args);
+	ft_free_env_array(data);
+	ft_cleanup_command_resources(data);
+	ft_shutdown(&data, 127);
+}
 /* ************************************************************************** */
 /*                                                                            */
 /*   Executes a command with the given arguments                             */
@@ -49,6 +58,9 @@ void	ft_execute_command(t_data *data, char **cmd_args, t_token_type type)
 {
 	int	exit_status;
 
+	exit_status = 0;
+	if (data->commands[0].redir.in_fd < 0 || data->commands[0].redir.out_fd < 0)
+		exit(exit_status);
 	if (type == BUILTIN)
 	{
 		ft_execute_builtin(data, cmd_args);
@@ -57,14 +69,7 @@ void	ft_execute_command(t_data *data, char **cmd_args, t_token_type type)
 	else
 	{
 		if (data->cmd_path == NULL)
-		{
-			ft_printf(C_RED"%s: Command not found\n"RESET_ALL, cmd_args[0]);
-			ft_free((void **)&data->cmd_path);
-			ft_free_array((void **)cmd_args);
-			ft_free_env_array(data);
-			ft_cleanup_command_resources(data);
-			ft_shutdown(&data, 127);
-		}
+			ft_command_not_found(data, cmd_args);
 		execve(data->cmd_path, cmd_args, data->env);
 		perror("execve");
 		exit_status = EXIT_FAILURE;
