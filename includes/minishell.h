@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 11:39:39 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/06/03 20:10:27 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/03 20:21:15 by pda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,5 +179,8 @@ void	ft_set_prompt_signals(void);
 void	ft_set_child_signals(void);
 void	ft_update_shlvl(t_data *data);
 void	ft_godark(t_data *data, char **cmd_args);
+void	ft_redirect_heredoc_to_file(t_command *command);
+void	ft_setup_heredoc_pipe(t_command *cmd);
+void	ft_handle_heredoc(t_data *data, t_command cmd, int cmd_index);
 
 #endif
