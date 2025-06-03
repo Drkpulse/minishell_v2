@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 19:57:22 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/05/22 11:41:48 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/03 19:45:29 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	ft_open_redirect_fds(t_redir *redir, const char *in, const char *out)
 		if (redir->in_fd != STDIN_FILENO && redir->in_fd > 0)
 			close(redir->in_fd);
 		redir->in_fd = open(in, O_RDONLY);
+		if (redir->in_fd < 0)
+			ft_printf(C_RED"minishell: %s: %s\n"RESET_ALL, in, strerror(errno));
 	}
 	if (out && *out)
 	{
@@ -28,10 +30,10 @@ void	ft_open_redirect_fds(t_redir *redir, const char *in, const char *out)
 			redir->out_fd = open(out, O_CREAT | O_APPEND | O_WRONLY, FILE_PERM);
 		else
 			redir->out_fd = open(out, O_CREAT | O_TRUNC | O_WRONLY, FILE_PERM);
+		if (redir->out_fd < 0)
+			ft_printf(C_RED"minishell: %s: %s\n"RESET_ALL, out, strerror(errno));
 		redir->append = false;
 	}
-	if (redir->in_fd < 0 || redir->out_fd < 0)
-		perror("FDs");
 }
 
 /* ************************************************************************** */

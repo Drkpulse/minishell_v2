@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 20:11:45 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/02 22:19:49 by pda-silv         ###   ########.fr       */
+/*   Updated: 2025/06/03 19:45:59 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,11 @@ void	ft_execute_command(t_data *data, char **cmd_args, t_token_type type)
 {
 	int	exit_status;
 
-	if (type == BUILTIN)
+	if (data->commands[0].redir.in_fd < 0 || data->commands[0].redir.out_fd < 0)
+	{
+		exit_status = 1;
+	}
+	else if (type == BUILTIN)
 	{
 		ft_execute_builtin(data, cmd_args);
 		exit_status = data->status;
@@ -144,7 +148,6 @@ void	ft_execute(t_data *data)
 	int		cmd_index;
 	char	**cmd_args;
 
-	ft_set_exec_signals();
 	ft_setup_heredoc_sync(data);
 	cmd_index = -1;
 	data->pids = malloc((data->cmd_count + 1) * sizeof(pid_t));
