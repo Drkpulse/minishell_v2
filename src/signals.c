@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 14:37:51 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/06/03 19:56:13 by pda-silv         ###   ########.fr       */
+/*   Updated: 2025/06/03 22:50:25 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,6 @@ static void	ft_prompt_signal(int signum)
 	if (signum == SIGINT)
 	{
 		write(1, "\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
-	else if (signum == SIGQUIT)
-	{
-		if (rl_line_buffer && rl_line_buffer[0] != '\0')
-		{
-			write(1, "\nQuit (core dumped)\n", 20);
-			exit(131);
-		}
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
@@ -58,10 +47,10 @@ void	ft_set_prompt_signals(void)
 	sa.sa_sigaction = &ft_prompt_handler;
 	sa.sa_flags = SA_SIGINFO;
 	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGQUIT, &sa, NULL);
 	sa.sa_handler = SIG_IGN;
 	sa.sa_flags = 0;
 	sigaction(SIGPIPE, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
 }
 
 /* ************************************************************************** */
