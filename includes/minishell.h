@@ -6,7 +6,7 @@
 /*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 11:39:39 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/06/03 20:38:46 by pda-silv         ###   ########.fr       */
+/*   Updated: 2025/06/03 20:43:38 by pda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,5 +186,6 @@ void	process_var_with_equal(t_data *data, char *var);
 void	add_env_variable(t_data *data, char *var, int count);
 void	ft_cleanup_command_resources(t_data *data);
 void	ft_setup_heredoc_sync(t_data *data);
+void	ft_add_token_to_command(t_data *data, t_token token, int *count);
 
 #endif
