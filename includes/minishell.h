@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 11:39:39 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/06/03 19:41:01 by pda-silv         ###   ########.fr       */
+/*   Updated: 2025/06/03 20:10:27 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,5 +178,6 @@ int		ft_disable_echoctl(void);
 void	ft_set_prompt_signals(void);
 void	ft_set_child_signals(void);
 void	ft_update_shlvl(t_data *data);
+void	ft_godark(t_data *data, char **cmd_args);
 
 #endif

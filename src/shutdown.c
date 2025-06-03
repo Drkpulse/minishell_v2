@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 14:37:51 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/06/03 19:54:00 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/03 20:11:31 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	ft_shutdown(t_data **data, int retval)
 	exit(retval);
 }
 
-void	ft_godark(t_data *data, t_data *cmd_args)
+void	ft_godark(t_data *data, char **cmd_args)
 {
 	ft_free_cmd(data, cmd_args);
 	ft_cleanup_execution(data);

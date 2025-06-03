@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 14:27:48 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/01 18:44:00 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/03 20:11:33 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ void	ft_export(t_data *data, char **cmd_args)
 	}
 }
 
-void	ft_update_shlvl(t_data *data)
+static char	*create_shlvl_var(char *shlvl_str)
 {
 	int		shlvl;
 	char	*new_shlvl;

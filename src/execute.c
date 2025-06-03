@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 20:11:45 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/03 19:45:59 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/03 20:07:50 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,7 @@ void	ft_execute_command(t_data *data, char **cmd_args, t_token_type type)
 {
 	int	exit_status;
 
-	if (data->commands[0].redir.in_fd < 0 || data->commands[0].redir.out_fd < 0)
-	{
-		exit_status = 1;
-	}
-	else if (type == BUILTIN)
+	if (type == BUILTIN)
 	{
 		ft_execute_builtin(data, cmd_args);
 		exit_status = data->status;

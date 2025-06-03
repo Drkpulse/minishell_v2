@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 13:30:00 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/03 19:38:45 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/03 20:17:16 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,18 +50,46 @@ void	ft_wait_children(t_data *data, pid_t *pids)
 /* ************************************************************************** */
 void	ft_redirect_heredoc_to_file(t_command *command)
 {
-    int	write_result;
+	int	write_result;
 
-    if (!command->redir.delim_buf || !command->redir.out_fd)
-        return ;
+	if (!command->redir.delim_buf || !command->redir.out_fd)
+		return ;
 
-    if (command->redir.out_fd > 1)
-    {
-        write_result = write(command->redir.out_fd,
-            command->redir.delim_buf, ft_strlen(command->redir.delim_buf));
-        if (write_result == -1)
-            perror("write to output file");
-    }
+	if (command->redir.out_fd > 1)
+	{
+		write_result = write(command->redir.out_fd,
+			command->redir.delim_buf, ft_strlen(command->redir.delim_buf));
+		if (write_result == -1)
+			perror("write to output file");
+	}
+}
+
+/* ************************************************************************** */
+/*                                                                            */
+/*   Sets up a pipe for heredoc input                                        */
+/*   Creates a pipe, writes heredoc content to it, and redirects stdin       */
+/*   Ensures proper cleanup of resources                                     */
+/* ************************************************************************** */
+void	ft_setup_heredoc_pipe(t_command *cmd)
+{
+	int	heredoc_pipe[2];
+	int	write_result;
+
+	if (pipe(heredoc_pipe) == -1)
+	{
+		perror("pipe");
+		free(cmd->redir.delim_buf);
+		return ;
+	}
+	write_result = write(heredoc_pipe[1], cmd->redir.delim_buf,
+			ft_strlen(cmd->redir.delim_buf));
+	if (write_result == -1)
+		perror("write to heredoc pipe");
+	close(heredoc_pipe[1]);
+	if (dup2(heredoc_pipe[0], STDIN_FILENO) == -1)
+		perror("dup2 in heredoc");
+	close(heredoc_pipe[0]);
+	free(cmd->redir.delim_buf);
 }
 
 /* ************************************************************************** */
@@ -73,52 +101,31 @@ void	ft_redirect_heredoc_to_file(t_command *command)
 /* ************************************************************************** */
 void	ft_handle_heredoc(t_data *data, t_command cmd, int cmd_index)
 {
-    int	heredoc_pipe[2];
-    int	write_result;
+	ft_get_delim_buf(&cmd, cmd.redir.delim);
 
-    ft_get_delim_buf(&cmd, cmd.redir.delim);
+	/* Check if we need to redirect heredoc to a file */
+	if (cmd.redir.out_fd != STDOUT_FILENO && cmd.redir.delim_buf)
+	{
+		ft_redirect_heredoc_to_file(&cmd);
+		if (cmd_index < data->cmd_count)
+		{
+			if (write(data->heredoc_sync[cmd_index][1], "", 1) == -1)
+				perror("write to heredoc sync");
+			close(data->heredoc_sync[cmd_index][1]);
+		}
+		free(cmd.redir.delim_buf);
+		return ;
+	}
 
-    /* Check if we need to redirect heredoc to a file */
-    if (cmd.redir.out_fd != STDOUT_FILENO && cmd.redir.delim_buf)
-    {
-        ft_redirect_heredoc_to_file(&cmd);
-        if (cmd_index < data->cmd_count)
-        {
-            write_result = write(data->heredoc_sync[cmd_index][1], "", 1);
-            if (write_result == -1)
-                perror("write to heredoc sync");
-            close(data->heredoc_sync[cmd_index][1]);
-        }
-        free(cmd.redir.delim_buf);
-        return;
-    }
-
-    /* Original heredoc handling for pipes continues here */
-    if (cmd_index < data->cmd_count)
-    {
-        write_result = write(data->heredoc_sync[cmd_index][1], "", 1);
-        if (write_result == -1)
-            perror("write to heredoc sync");
-        close(data->heredoc_sync[cmd_index][1]);
-    }
-    if (cmd.redir.delim_buf)
-    {
-        if (pipe(heredoc_pipe) == -1)
-        {
-            perror("pipe");
-            free(cmd.redir.delim_buf);
-            return ;
-        }
-        write_result = write(heredoc_pipe[1], cmd.redir.delim_buf,
-                ft_strlen(cmd.redir.delim_buf));
-        if (write_result == -1)
-            perror("write to heredoc pipe");
-        close(heredoc_pipe[1]);
-        if (dup2(heredoc_pipe[0], STDIN_FILENO) == -1)
-            perror("dup2 in heredoc");
-        close(heredoc_pipe[0]);
-        free(cmd.redir.delim_buf);
-    }
+	/* Original heredoc handling for pipes continues here */
+	if (cmd_index < data->cmd_count)
+	{
+		if (write(data->heredoc_sync[cmd_index][1], "", 1) == -1)
+			perror("write to heredoc sync");
+		close(data->heredoc_sync[cmd_index][1]);
+	}
+	if (cmd.redir.delim_buf)
+		ft_setup_heredoc_pipe(&cmd);
 }
 
 void	ft_setup_pipes(int pipefd[2])
