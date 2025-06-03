@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 20:11:45 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/03 20:07:50 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/03 20:33:42 by pda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 /*   Follows the pattern of other memory management functions                */
 /*   Ensures no memory leaks or double frees occur                           */
 /* ************************************************************************** */
-static void	ft_cleanup_command_resources(t_data *data)
+void	ft_cleanup_command_resources(t_data *data)
 {
 	int	i;
 
@@ -98,36 +98,6 @@ static void	ft_setup_heredoc_sync(t_data *data)
 		pipe(data->heredoc_sync[i]);
 		i++;
 	}
-}
-
-/* ************************************************************************** */
-/*                                                                            */
-/*   Performs cleanup operations after command execution                     */
-/*   Closes heredoc synchronization pipes                                    */
-/*   Waits for child processes to complete                                   */
-/*   Closes any redirected file descriptors                                  */
-/* ************************************************************************** */
-void	ft_cleanup_execution(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (i < data->cmd_count)
-	{
-		ft_safe_close(&data->heredoc_sync[i][0]);
-		ft_safe_close(&data->heredoc_sync[i][1]);
-		i++;
-	}
-	ft_wait_children(data, data->pids);
-	i = 0;
-	while (i <= data->cmd_count)
-	{
-		ft_close_redirect_fds(&data->commands[i].redir);
-		i++;
-	}
-	ft_cleanup_command_resources(data);
-	data->pids = NULL;
-	ft_free_tokens(data);
 }
 
 /* ************************************************************************** */

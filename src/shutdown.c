@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shutdown.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 14:37:51 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/06/03 20:11:31 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/03 20:33:11 by pda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,34 @@ void	ft_godark(t_data *data, char **cmd_args)
 	ft_safe_close(&data->original_stdin);
 	ft_safe_close(&data->original_stdout);
 	ft_shutdown(&data, (unsigned char)data->status);
+}
+
+/* ************************************************************************** */
+/*                                                                            */
+/*   Performs cleanup operations after command execution                     */
+/*   Closes heredoc synchronization pipes                                    */
+/*   Waits for child processes to complete                                   */
+/*   Closes any redirected file descriptors                                  */
+/* ************************************************************************** */
+void	ft_cleanup_execution(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->cmd_count)
+	{
+		ft_safe_close(&data->heredoc_sync[i][0]);
+		ft_safe_close(&data->heredoc_sync[i][1]);
+		i++;
+	}
+	ft_wait_children(data, data->pids);
+	i = 0;
+	while (i <= data->cmd_count)
+	{
+		ft_close_redirect_fds(&data->commands[i].redir);
+		i++;
+	}
+	ft_cleanup_command_resources(data);
+	data->pids = NULL;
+	ft_free_tokens(data);
 }
