@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 11:39:39 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/06/02 22:14:49 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/03 19:41:01 by pda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,6 @@ int		is_valid_identifier_char(char c, int first_char);
 int		check_identifier(char *arg);
 void	ft_free_env_array(t_data *data);
 int		ft_disable_echoctl(void);
-void	ft_set_exec_signals(void);
 void	ft_set_prompt_signals(void);
 void	ft_set_child_signals(void);
 void	ft_update_shlvl(t_data *data);
