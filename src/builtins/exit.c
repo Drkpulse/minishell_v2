@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 14:27:48 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/03 20:23:24 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/03 20:37:12 by pda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,10 @@ void	ft_exit(t_data *data, char **cmd_args)
 	if (!cmd_args[1])
 	{
 		ft_free_cmd(data, cmd_args);
-	ft_cleanup_execution(data);
-	ft_safe_close(&data->original_stdin);
-	ft_safe_close(&data->original_stdout);
-	ft_shutdown(&data, (unsigned char)data->status);
+		ft_cleanup_execution(data);
+		ft_safe_close(&data->original_stdin);
+		ft_safe_close(&data->original_stdout);
+		ft_shutdown(&data, (unsigned char)data->status);
 	}
 	if (!is_numeric_arg(cmd_args[1], &exit_status))
 	{

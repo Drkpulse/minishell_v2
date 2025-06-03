@@ -6,7 +6,7 @@
 /*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 20:11:45 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/03 20:28:39 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/03 20:38:23 by pda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	ft_command_not_found(t_data *data, char **cmd_args)
 	ft_cleanup_command_resources(data);
 	ft_shutdown(&data, 127);
 }
+
 /* ************************************************************************** */
 /*                                                                            */
 /*   Executes a command with the given arguments                             */
@@ -83,25 +84,6 @@ static void	ft_prepare_command(t_data *data, int cmd_index, char ***cmd_args)
 {
 	*cmd_args = ft_tokens_to_args(&data->commands[cmd_index]);
 	ft_getpath(data, *cmd_args[0]);
-}
-
-/* ************************************************************************** */
-/*                                                                            */
-/*   Executes commands in the pipeline                                       */
-/*   Sets up pipes and heredoc synchronization                               */
-/*   Handles execution flow for builtins and external commands               */
-/*   Manages command redirection and cleanup                                 */
-/* ************************************************************************** */
-static void	ft_setup_heredoc_sync(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (i < data->cmd_count)
-	{
-		pipe(data->heredoc_sync[i]);
-		i++;
-	}
 }
 
 /* ************************************************************************** */

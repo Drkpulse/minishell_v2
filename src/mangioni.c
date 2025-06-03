@@ -6,7 +6,7 @@
 /*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 13:30:00 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/03 20:24:04 by pda-silv         ###   ########.fr       */
+/*   Updated: 2025/06/03 20:38:37 by pda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,23 @@ void	ft_handle_heredoc(t_data *data, t_command cmd, int cmd_index)
 	}
 	if (cmd.redir.delim_buf)
 		ft_setup_heredoc_pipe(&cmd);
+}
+
+/* ************************************************************************** */
+/*                                                                            */
+/*   Executes commands in the pipeline                                       */
+/*   Sets up pipes and heredoc synchronization                               */
+/*   Handles execution flow for builtins and external commands               */
+/*   Manages command redirection and cleanup                                 */
+/* ************************************************************************** */
+void	ft_setup_heredoc_sync(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->cmd_count)
+	{
+		pipe(data->heredoc_sync[i]);
+		i++;
+	}
 }
