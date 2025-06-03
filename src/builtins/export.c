@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 14:27:48 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/03 20:11:33 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/03 20:30:42 by pda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	add_env_variable(t_data *data, char *var, int count)
+void	add_env_variable(t_data *data, char *var, int count)
 {
 	char	**new_env;
 	int		i;
@@ -57,7 +57,7 @@ static int	update_existing_var(t_data *data, char *var_name, char *end_ptr,
 	return (found);
 }
 
-static void	process_var_with_equal(t_data *data, char *var)
+void	process_var_with_equal(t_data *data, char *var)
 {
 	char	*var_copy;
 	int		j;
@@ -134,45 +134,4 @@ void	ft_export(t_data *data, char **cmd_args)
 			process_var_no_equal(data, cmd_args[i]);
 		i++;
 	}
-}
-
-static char	*create_shlvl_var(char *shlvl_str)
-{
-	int		shlvl;
-	char	*new_shlvl;
-	char	*var;
-
-	if (!shlvl_str || !*shlvl_str)
-		shlvl = 0;
-	else
-		shlvl = ft_atoi(shlvl_str);
-	shlvl++;
-	new_shlvl = ft_itoa(shlvl);
-	if (!new_shlvl)
-		return (NULL);
-	var = ft_strjoin("SHLVL=", new_shlvl);
-	free(new_shlvl);
-	return (var);
-}
-
-void	ft_update_shlvl(t_data *data)
-{
-	char	*shlvl_str;
-	char	*var;
-	int		count;
-
-	shlvl_str = ft_getenv("SHLVL", data->env);
-	var = create_shlvl_var(shlvl_str);
-	if (!var)
-		return ;
-	if (var_exists(data->env, "SHLVL"))
-		process_var_with_equal(data, var);
-	else
-	{
-		count = 0;
-		while (data->env[count])
-			count++;
-		add_env_variable(data, var, count);
-	}
-	free(var);
 }

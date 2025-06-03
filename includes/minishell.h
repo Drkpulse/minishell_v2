@@ -6,7 +6,7 @@
 /*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 11:39:39 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/06/03 20:21:15 by pda-silv         ###   ########.fr       */
+/*   Updated: 2025/06/03 20:30:49 by pda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,5 +182,7 @@ void	ft_godark(t_data *data, char **cmd_args);
 void	ft_redirect_heredoc_to_file(t_command *command);
 void	ft_setup_heredoc_pipe(t_command *cmd);
 void	ft_handle_heredoc(t_data *data, t_command cmd, int cmd_index);
+void	process_var_with_equal(t_data *data, char *var);
+void	add_env_variable(t_data *data, char *var, int count);
 
 #endif
