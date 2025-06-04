@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 14:27:48 by joseferr          #+#    #+#             */
-/*   Updated: 2025/04/22 21:45:57 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/03 19:58:13 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,35 @@ void	ft_set_data_env(t_data *data, char *OLDPWD)
 	i = 0;
 	while (data->env[i])
 	{
-		ft_set_env(&data->env[i], OLDPWD, "OLDPWD=");
-		ft_set_env(&data->env[i], data->cwd, "PWD=");
+		if (ft_strncmp(data->env[i], "PWD=", 4) == 0)
+			ft_set_env(&data->env[i], data->cwd, "PWD=");
+		else if (ft_strncmp(data->env[i], "OLDPWD=", 7) == 0)
+			ft_set_env(&data->env[i], OLDPWD, "OLDPWD=");
 		i++;
 	}
+	free(OLDPWD);
+}
+
+/********************/
+/*Get Path For CD*/
+/********************/
+static char	*get_cd_path(t_data *data, char **cmdargs)
+{
+	char	*path;
+
+	if (!cmdargs[1])
+	{
+		path = ft_getenv("HOME", data->env);
+		if (!path)
+		{
+			write(2, "cd: HOME not set\n", 17);
+			data->status = 1;
+			return (NULL);
+		}
+	}
+	else
+		path = cmdargs[1];
+	return (path);
 }
 
 /********************/
@@ -55,24 +80,18 @@ void	ft_cd(t_data *data, char **cmdargs)
 	char	*copy;
 	char	*path;
 
-	if (!cmdargs[1])
-	{
-		path = ft_getenv("HOME", data->env);
-		if (!path)
-		{
-			write(2, "cd: Home not set\n", 18);
-			return ;
-		}
-	}
-	else
-		path = cmdargs[1];
+	path = get_cd_path(data, cmdargs);
+	if (!path)
+		return ;
 	getcwd(oldpwd, sizeof(oldpwd));
 	if (chdir(path) != 0)
 	{
+		data->status = 1;
 		perror("cd");
 		return ;
 	}
 	getcwd(data->cwd, sizeof(data->cwd));
 	copy = ft_strdup(oldpwd);
 	ft_set_data_env(data, copy);
+	data->status = 0;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 11:39:39 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/05/29 22:31:03 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/03 20:43:38 by pda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
+# include <termios.h>
 
 # include "libft/libft.h"
 
@@ -55,7 +56,8 @@ typedef enum e_token_type
 	REDIR_IN,
 	REDIR_OUT,
 	REDIR_DELIM,
-	REDIR_APPEND
+	REDIR_APPEND,
+	ERROR
 }	t_token_type;
 
 typedef struct s_redir
@@ -98,8 +100,6 @@ typedef struct s_data
 	int			heredoc_sync[MAX_PIPE_COUNT][2];
 }	t_data;
 
-extern int	g_signal;
-
 //	Parsing
 int		ft_tokenize_input(t_data *data, char *ptr, int count);
 char	*ft_parse_word(char **ptr, t_data *data);
@@ -125,8 +125,8 @@ void	ft_print_sorted_env(char **env);
 void	ft_export(t_data *data, char **cmd_args);
 void	ft_unset(t_data *data, char **cmd_args);
 void	ft_cd(t_data *data, char **cmd_args);
-void	ft_echo(char **cmd_args);
-void	ft_pwd(t_data *data);
+void	ft_echo(t_data *data, char **cmd_args);
+void	ft_pwd(t_data *data, char **cmd_args);
 void	ft_env(t_data *data);
 
 //	Pathing
@@ -171,4 +171,21 @@ void	ft_cleanup_execution(t_data *data);
 void	ft_safe_close(int *fd);
 void	write_error_message(char *var);
 int		ft_replace_tabs(char *str);
+int		is_valid_identifier_char(char c, int first_char);
+int		check_identifier(char *arg);
+void	ft_free_env_array(t_data *data);
+int		ft_disable_echoctl(void);
+void	ft_set_prompt_signals(void);
+void	ft_set_child_signals(void);
+void	ft_update_shlvl(t_data *data);
+void	ft_godark(t_data *data, char **cmd_args);
+void	ft_redirect_heredoc_to_file(t_command *command);
+void	ft_setup_heredoc_pipe(t_command *cmd);
+void	ft_handle_heredoc(t_data *data, t_command cmd, int cmd_index);
+void	process_var_with_equal(t_data *data, char *var);
+void	add_env_variable(t_data *data, char *var, int count);
+void	ft_cleanup_command_resources(t_data *data);
+void	ft_setup_heredoc_sync(t_data *data);
+void	ft_add_token_to_command(t_data *data, t_token token, int *count);
+
 #endif

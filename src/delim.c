@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 14:48:25 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/04/22 21:35:57 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/01 20:13:42 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,13 @@ void	ft_get_delim_buf(t_command *command, char *delim)
 	temp = ft_strdup("");
 	if (!temp)
 		return ;
-	buffer = ft_strdup(" > "RESET_COLOR);
+	buffer = ft_strdup(C_BLUE" > "RESET_COLOR);
 	while (1)
 	{
 		new = readline(buffer);
 		if (!new)
 		{
-			if (ft_strncmp(delim, "EOF", 4) != 0)
-				ft_process_eof(delim);
+			ft_process_eof(delim);
 			break ;
 		}
 		if (ft_check_delimiter(new, delim))
@@ -73,6 +72,6 @@ void	ft_get_delim_buf(t_command *command, char *delim)
 		ft_append_line(&temp, new);
 		free(new);
 	}
-	command->redir.delim_buf = temp;
 	free(buffer);
+	command->redir.delim_buf = temp;
 }

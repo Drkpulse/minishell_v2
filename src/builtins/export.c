@@ -6,13 +6,13 @@
 /*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 14:27:48 by joseferr          #+#    #+#             */
-/*   Updated: 2025/05/29 22:24:33 by pda-silv         ###   ########.fr       */
+/*   Updated: 2025/06/03 20:30:42 by pda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	add_env_variable(t_data *data, char *var, int count)
+void	add_env_variable(t_data *data, char *var, int count)
 {
 	char	**new_env;
 	int		i;
@@ -57,7 +57,7 @@ static int	update_existing_var(t_data *data, char *var_name, char *end_ptr,
 	return (found);
 }
 
-static void	process_var_with_equal(t_data *data, char *var)
+void	process_var_with_equal(t_data *data, char *var)
 {
 	char	*var_copy;
 	int		j;
@@ -107,9 +107,6 @@ static void	process_var_no_equal(t_data *data, char *var)
 	add_env_variable(data, var, count);
 }
 
-/************************/
-/*Export Builtin Command*/
-/************************/
 void	ft_export(t_data *data, char **cmd_args)
 {
 	int		i;
@@ -123,6 +120,13 @@ void	ft_export(t_data *data, char **cmd_args)
 	i = 1;
 	while (cmd_args[i])
 	{
+		if (!check_identifier(cmd_args[i]))
+		{
+			ft_printf(C_RED"export: not a valid identifier: %s\n"RESET_COLOR,
+				cmd_args[i]);
+			i++;
+			continue ;
+		}
 		equal_sign = ft_strchr(cmd_args[i], '=');
 		if (equal_sign)
 			process_var_with_equal(data, cmd_args[i]);

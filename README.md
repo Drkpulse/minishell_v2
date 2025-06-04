@@ -1,7 +1,5 @@
 # 42 Minishell
 
-***by [pda-silv](https://github.com/PBento96) and [joseferr](https://github.com/Drkpulse)***
-
 ![Minishell 42](https://github.com/mcombeau/mcombeau/blob/main/42_badges/minishelle.png)
 
 ![42](https://img.shields.io/badge/-42-black?style=for-the-badge&logo=42&logoColor=white)

@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 11:39:13 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/05/29 22:31:38 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/02 22:12:25 by pda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	g_signal = 0;
 
 /* Input first spa treatment                   */
 /* Closes the input if it ends with newline    */
@@ -22,7 +20,8 @@ int	g_signal = 0;
 
 void	ft_process_input(t_data *data)
 {
-	add_history(data->input);
+	if (data->input[0] != '\0')
+		add_history(data->input);
 	if (!ft_is_quotes_balanced(data->input))
 	{
 		ft_printf(C_RED"Invalid Input - Unclosed Quotes\n"RESET_ALL);
@@ -47,6 +46,7 @@ static void	ft_iohandler(t_data *data)
 {
 	char	prompt[MAX_CWD_SIZE + 20];
 
+	ft_set_prompt_signals();
 	if (!getcwd(data->cwd, sizeof(data->cwd)))
 	{
 		perror("getcwd");
@@ -62,20 +62,6 @@ static void	ft_iohandler(t_data *data)
 	ft_process_input(data);
 }
 
-static void	ft_sighandler(int signum, siginfo_t *info, void *context)
-{
-	(void)info;
-	(void)context;
-	g_signal = signum;
-	if (signum == SIGINT)
-	{
-		write(1, "\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
-}
-
 /* Adds a tab character when TAB is pressed instead of autocompletion */
 static int	ft_tab_handler(int count, int key)
 {
@@ -88,26 +74,31 @@ static int	ft_tab_handler(int count, int key)
 	return (1);
 }
 
-/* Should start signal handling before running loop */
+int	ft_disable_echoctl(void)
+{
+	struct termios	term;
+
+	if (tcgetattr(0, &term) == -1)
+		return (-1);
+	term.c_lflag &= ~ECHOCTL;
+	if (tcsetattr(0, TCSANOW, &term) == -1)
+		return (-1);
+	return (0);
+}
 
 int	main(int argc, char **argv, char **env)
 {
-	struct sigaction	sa;
-	t_data				*data;
+	t_data	*data;
 
 	(void)argc;
 	(void)argv;
 	if (ft_initilaize(&data, env))
 		ft_shutdown(&data, NOK);
-	sigemptyset(&sa.sa_mask);
-	sigaddset(&sa.sa_mask, SIGINT);
-	sigaddset(&sa.sa_mask, SIGQUIT);
-	sa.sa_sigaction = &ft_sighandler;
-	sa.sa_flags = SA_SIGINFO;
-	sigaction(SIGINT, &sa, NULL);
-	sa.sa_handler = SIG_IGN;
-	sa.sa_flags = 0;
-	sigaction(SIGQUIT, &sa, NULL);
+	if (ft_disable_echoctl() == -1)
+	{
+		write(2, "minishell: failed to set terminal attributes\n", 44);
+		ft_shutdown(&data, NOK);
+	}
 	rl_bind_key('\t', &ft_tab_handler);
 	while (true)
 		ft_iohandler(data);

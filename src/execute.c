@@ -6,11 +6,47 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 20:11:45 by joseferr          #+#    #+#             */
-/*   Updated: 2025/05/27 11:42:42 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/03 22:45:15 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/* ************************************************************************** */
+/*                                                                            */
+/*   Clean up command resources before shutdown                              */
+/*   Safely frees redirection and command-related memory                     */
+/*   Follows the pattern of other memory management functions                */
+/*   Ensures no memory leaks or double frees occur                           */
+/* ************************************************************************** */
+void	ft_cleanup_command_resources(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i <= data->cmd_count)
+	{
+		if (data->commands[i].redir.delim)
+		{
+			ft_free((void **)&data->commands[i].redir.delim);
+		}
+		if (data->commands[i].redir.delim_buf)
+		{
+			ft_free((void **)&data->commands[i].redir.delim_buf);
+		}
+		i++;
+	}
+}
+
+void	ft_command_not_found(t_data *data, char **cmd_args)
+{
+	ft_printf(C_RED"%s: Command not found\n"RESET_ALL, cmd_args[0]);
+	ft_free((void **)&data->cmd_path);
+	ft_free_array((void **)cmd_args);
+	ft_free_env_array(data);
+	ft_cleanup_command_resources(data);
+	ft_shutdown(&data, 127);
+}
 
 /* ************************************************************************** */
 /*                                                                            */
@@ -23,6 +59,9 @@ void	ft_execute_command(t_data *data, char **cmd_args, t_token_type type)
 {
 	int	exit_status;
 
+	exit_status = 0;
+	if (data->commands[0].redir.in_fd < 0 || data->commands[0].redir.out_fd < 0 || !cmd_args[0])
+		exit(exit_status);
 	if (type == BUILTIN)
 	{
 		ft_execute_builtin(data, cmd_args);
@@ -31,12 +70,7 @@ void	ft_execute_command(t_data *data, char **cmd_args, t_token_type type)
 	else
 	{
 		if (data->cmd_path == NULL)
-		{
-			ft_printf(C_RED"%s: Command not found\n"RESET_ALL, cmd_args[0]);
-			ft_free_array((void **)cmd_args);
-			data->status = 127;
-			exit(EXIT_FAILURE);
-		}
+			ft_command_not_found(data, cmd_args);
 		execve(data->cmd_path, cmd_args, data->env);
 		perror("execve");
 		exit_status = EXIT_FAILURE;
@@ -50,54 +84,6 @@ static void	ft_prepare_command(t_data *data, int cmd_index, char ***cmd_args)
 {
 	*cmd_args = ft_tokens_to_args(&data->commands[cmd_index]);
 	ft_getpath(data, *cmd_args[0]);
-}
-
-/* ************************************************************************** */
-/*                                                                            */
-/*   Executes commands in the pipeline                                       */
-/*   Sets up pipes and heredoc synchronization                               */
-/*   Handles execution flow for builtins and external commands               */
-/*   Manages command redirection and cleanup                                 */
-/* ************************************************************************** */
-static void	ft_setup_heredoc_sync(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (i < data->cmd_count)
-	{
-		pipe(data->heredoc_sync[i]);
-		i++;
-	}
-}
-
-/* ************************************************************************** */
-/*                                                                            */
-/*   Performs cleanup operations after command execution                     */
-/*   Closes heredoc synchronization pipes                                    */
-/*   Waits for child processes to complete                                   */
-/*   Closes any redirected file descriptors                                  */
-/* ************************************************************************** */
-void	ft_cleanup_execution(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (i < data->cmd_count)
-	{
-		ft_safe_close(&data->heredoc_sync[i][0]);
-		ft_safe_close(&data->heredoc_sync[i][1]);
-		i++;
-	}
-	ft_wait_children(data, data->pids);
-	i = 0;
-	while (i <= data->cmd_count)
-	{
-		ft_close_redirect_fds(&data->commands[i].redir);
-		i++;
-	}
-	data->pids = NULL;
-	ft_free_tokens(data);
 }
 
 /* ************************************************************************** */

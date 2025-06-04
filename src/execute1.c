@@ -6,15 +6,24 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 20:11:45 by joseferr          #+#    #+#             */
-/*   Updated: 2025/05/29 22:35:59 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/02 22:01:08 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/* ************************************************************************** */
+/*                                                                            */
+/*   Creates a child process to execute a command                            */
+/*   Sets up pipes for communication between processes                       */
+/*   Configures signal handling for child processes                          */
+/*   Handles execution of commands in the child process                      */
+/* ************************************************************************** */
 static void	ft_create_child_process(t_data *data, int pipefd[2],
 	int cmd_index, char **cmd_args)
 {
+	struct sigaction	sa;
+
 	if (cmd_index < data->cmd_count)
 		ft_setup_pipes(pipefd);
 	data->pids[cmd_index] = fork();
@@ -22,9 +31,19 @@ static void	ft_create_child_process(t_data *data, int pipefd[2],
 		ft_pipe_error(data, cmd_args);
 	else if (data->pids[cmd_index] == 0)
 	{
+		ft_set_child_signals();
 		ft_handle_pipes(data, pipefd, data->commands[cmd_index], cmd_index);
 		ft_execute_command(data, cmd_args,
 			data->commands[cmd_index].tokens->type);
+		exit(EXIT_FAILURE);
+	}
+	else
+	{
+		sigemptyset(&sa.sa_mask);
+		sa.sa_handler = SIG_IGN;
+		sa.sa_flags = 0;
+		sigaction(SIGINT, &sa, NULL);
+		sigaction(SIGQUIT, &sa, NULL);
 	}
 }
 
@@ -46,9 +65,9 @@ void	ft_safe_close(int *fd)
 static void	ft_handle_parent(t_data *data, int pipefd[2], int cmd_index)
 {
 	if (cmd_index < data->cmd_count)
-		close(pipefd[1]);
+		ft_safe_close(&pipefd[1]);
 	if (data->prev_pipe != -1)
-		close(data->prev_pipe);
+		ft_safe_close(&data->prev_pipe);
 	if (cmd_index < data->cmd_count)
 		data->prev_pipe = pipefd[0];
 }
@@ -100,7 +119,6 @@ void	ft_execute_lone_builtin(t_data *data, int cmd_index, char **cmd_args)
 	}
 	data->pids[cmd_index] = -1;
 	ft_execute_builtin(data, cmd_args);
-	data->status = 0;
 	dup2(data->original_stdin, STDIN_FILENO);
 	dup2(data->original_stdout, STDOUT_FILENO);
 	ft_safe_close(&data->original_stdin);

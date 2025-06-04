@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 14:27:48 by joseferr          #+#    #+#             */
-/*   Updated: 2025/04/22 21:38:24 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/02 22:14:40 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	is_valid_echo_flag(const char *flag)
 /**********************/
 /*Echo Builtin Command*/
 /**********************/
-void	ft_echo(char **cmd_args)
+void	ft_echo(t_data *data, char **cmd_args)
 {
 	int	newline;
 	int	i;
@@ -53,4 +53,5 @@ void	ft_echo(char **cmd_args)
 	}
 	if (newline)
 		ft_printf("\n");
+	data->status = 0;
 }

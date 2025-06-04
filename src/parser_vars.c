@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_vars.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 19:19:50 by joseferr          #+#    #+#             */
-/*   Updated: 2025/05/29 21:45:08 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/02 22:17:33 by pda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ static char	*handle_variable(char *word, int *i, t_data *data, char *result)
 	if (word[*i] == '?')
 	{
 		var_value = ft_itoa(data->status);
+		if (!var_value)
+			return (NULL);
 		tmp = ft_strjoin(result, var_value);
 		free(result);
 		free(var_value);

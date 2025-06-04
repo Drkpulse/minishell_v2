@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   startup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 09:23:36 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/04/29 22:22:01 by pda-silv         ###   ########.fr       */
+/*   Updated: 2025/06/01 18:38:50 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,6 @@ int	ft_initilaize(t_data **data, char **env)
 	(*data)->env = ft_envdup(env);
 	if (!(*data)->env)
 		return (NOK);
+	ft_update_shlvl(*data);
 	return (OK);
 }

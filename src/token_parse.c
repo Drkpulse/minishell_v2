@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_parse.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 10:23:36 by joseferr          #+#    #+#             */
-/*   Updated: 2025/05/29 19:54:24 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/02 22:10:26 by pda-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,15 @@ static void	ft_parse_input_redir(char **ptr, t_token *token)
 		token->type = REDIR_DELIM;
 		token->value = ft_strdup("<<");
 		(*ptr) += 2;
+		*ptr = ft_skip_whitespace(*ptr);
+		if (!**ptr || **ptr == '|' || **ptr == '>' || **ptr == '<')
+		{
+			ft_printf(C_RED
+				"minishell: syntax error near unexpected token `newline'\n"
+				RESET_ALL);
+			ft_free((void **)&token->value);
+			token->type = ERROR;
+		}
 	}
 	else
 	{
@@ -59,7 +68,11 @@ static t_token	ft_parse_redirection(char **ptr)
 	if (**ptr == '>')
 		ft_parse_output_redir(ptr, &token);
 	else if (**ptr == '<')
+	{
 		ft_parse_input_redir(ptr, &token);
+		if (token.type == ERROR)
+			return (token);
+	}
 	return (token);
 }
 
