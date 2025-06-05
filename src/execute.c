@@ -14,10 +14,10 @@
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Clean up command resources before shutdown                              */
-/*   Safely frees redirection and command-related memory                     */
-/*   Follows the pattern of other memory management functions                */
-/*   Ensures no memory leaks or double frees occur                           */
+/*   Clean up command resources before shutdown                               */
+/*   Safely frees redirection and command-related memory                      */
+/*   Follows the pattern of other memory management functions                 */
+/*   Ensures no memory leaks or double frees occur                            */
 /* ************************************************************************** */
 void	ft_cleanup_command_resources(t_data *data)
 {
@@ -50,34 +50,28 @@ void	ft_command_not_found(t_data *data, char **cmd_args)
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Executes a command with the given arguments                             */
-/*   For builtins, runs them directly                                        */
-/*   For external commands, uses execve with proper path                     */
-/*   Handles cleanup and exits the child process when done                   */
+/*   Executes a command with the given arguments                              */
+/*   For builtins, runs them directly                                         */
+/*   For external commands, uses execve with proper path                      */
+/*   Handles cleanup and exits the child process when done                    */
 /* ************************************************************************** */
 void	ft_execute_command(t_data *data, char **cmd_args, t_token_type type)
 {
-	int	exit_status;
-
-	exit_status = 0;
 	if (data->commands[0].redir.in_fd < 0 || data->commands[0].redir.out_fd < 0 || !cmd_args[0])
-		exit(exit_status);
+		exit(data->status);
 	if (type == BUILTIN)
-	{
 		ft_execute_builtin(data, cmd_args);
-		exit_status = data->status;
-	}
 	else
 	{
 		if (data->cmd_path == NULL)
 			ft_command_not_found(data, cmd_args);
 		execve(data->cmd_path, cmd_args, data->env);
 		perror("execve");
-		exit_status = EXIT_FAILURE;
+		data->status = EXIT_FAILURE;
 	}
 	ft_free((void **)&data->cmd_path);
 	ft_free_array((void **)cmd_args);
-	exit(exit_status);
+	exit(data->status);
 }
 
 static void	ft_prepare_command(t_data *data, int cmd_index, char ***cmd_args)
@@ -88,11 +82,11 @@ static void	ft_prepare_command(t_data *data, int cmd_index, char ***cmd_args)
 
 /* ************************************************************************** */
 /*                                                                            */
-/*   Main command execution controller                                       */
-/*   Allocates memory for process IDs                                        */
-/*   Processes commands one by one                                           */
-/*   Handles special case for lone builtins                                  */
-/*   Coordinates cleanup after execution                                     */
+/*   Main command execution controller                                        */
+/*   Allocates memory for process IDs                                         */
+/*   Processes commands one by one                                            */
+/*   Handles special case for lone builtins                                   */
+/*   Coordinates cleanup after execution                                      */
 /* ************************************************************************** */
 void	ft_execute(t_data *data)
 {
@@ -102,6 +96,7 @@ void	ft_execute(t_data *data)
 
 	ft_setup_heredoc_sync(data);
 	cmd_index = -1;
+	data->status = 0;
 	data->pids = malloc((data->cmd_count + 1) * sizeof(pid_t));
 	if (!data->pids)
 		return ;
