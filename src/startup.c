@@ -20,7 +20,7 @@ static void	ft_header(void)
 	ft_printf(" | | |_  )  _ __ (_)_ _ (_)__| |_  ___| | |\n");
 	ft_printf(" |_  _/ /  | '  \\| | ' \\| (_-< ' \\/ -_) | |\n");
 	ft_printf("   |_/___| |_|_|_|_|_||_|_/__/_||_\\___|_|_|\n");
-	ft_printf("\n\tProject by joseferr & pda-silv\n\n" RESET_COLOR);
+	ft_printf("\n\tProject by joseferr & anferrei\n\n" RESET_COLOR);
 }
 
 static int	ft_init_data(t_data **data)

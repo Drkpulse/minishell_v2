@@ -15,7 +15,7 @@
 /*
 ** Handles SIGINT and SIGQUIT at the prompt.
 */
-static void	ft_prompt_signal(int signum)
+static void	ft_prompt_signal(int signum, t_data *data)
 {
 	if (signum == SIGINT)
 	{
@@ -23,17 +23,18 @@ static void	ft_prompt_signal(int signum)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
+		data->status = 130;
 	}
 }
 
 /*
 ** Signal handler for prompt state.
 */
-static void	ft_prompt_handler(int signum, siginfo_t *info, void *context)
+static void	ft_prompt_handler(int signum, siginfo_t *info, void *context, t_data *data)
 {
 	(void)info;
 	(void)context;
-	ft_prompt_signal(signum);
+	ft_prompt_signal(signum, data);
 }
 
 /*

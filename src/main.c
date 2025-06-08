@@ -46,7 +46,7 @@ static void	ft_iohandler(t_data *data)
 {
 	char	prompt[MAX_CWD_SIZE + 20];
 
-	ft_set_prompt_signals();
+	ft_set_prompt_signals(data);
 	if (!getcwd(data->cwd, sizeof(data->cwd)))
 	{
 		perror("getcwd");

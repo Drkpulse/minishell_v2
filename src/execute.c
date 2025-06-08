@@ -58,7 +58,7 @@ void	ft_command_not_found(t_data *data, char **cmd_args)
 void	ft_execute_command(t_data *data, char **cmd_args, t_token_type type)
 {
 	if (data->commands[0].redir.in_fd < 0 || data->commands[0].redir.out_fd < 0
-		|| !cmd_args[0])
+		|| !cmd_args[0] || (cmd_args[0] && !cmd_args[0][0]))
 		exit(data->status);
 	if (type == BUILTIN)
 		ft_execute_builtin(data, cmd_args);

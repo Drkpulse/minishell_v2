@@ -12,10 +12,35 @@
 
 #include "minishell.h"
 
-static int	is_numeric_arg(char *arg, int *exit_value)
+long read_num_exit(char *arg, t_data *data, int i, bool neg)
 {
-	int	i;
-	int	neg;
+	long result;
+
+	result = 0;
+	while (arg[i])
+	{
+		if(!ft_isdigit(arg[i]))
+		{
+
+			data->status = 2;
+			return(-1);
+		}
+		result = result * 10 + (arg[i] - '0');
+		if ((!neg && result > LONG_MAX) || (neg && -result < LONG_MIN))
+		{
+			data->status = 2;
+			return (-1);
+		}
+		i ++;
+	}
+	return (result);
+}
+
+static int	is_numeric_arg(char *arg, t_data *data)
+{
+	int		i;
+	bool	neg;
+	long 	result;
 
 	i = 0;
 	neg = 0;
@@ -25,20 +50,21 @@ static int	is_numeric_arg(char *arg, int *exit_value)
 			neg = 1;
 		i++;
 	}
-	*exit_value = 0;
-	while (arg[i])
+	if (!arg[i])
 	{
-		if (arg[i] < '0' || arg[i] > '9')
-			return (0);
-		*exit_value = *exit_value * 10 + (arg[i] - '0');
-		i++;
+		data->status = 2;
+		return(0);
 	}
+	result = read_num_exit(arg, data, i, neg);
+	if (result == -1)
+		return (0);
+	data->status = (int)(result % 256);
 	if (neg)
-		*exit_value = -*exit_value;
-	return (1);
+		data->status = 256 - data->status;
+	return(1);
 }
 
-static void	handle_exit_error(char *arg)
+static void	print_exit_msg(char *arg)
 {
 	write(2, "minishell: exit: ", 17);
 	write(2, arg, ft_strlen(arg));
@@ -54,22 +80,23 @@ void	ft_exit(t_data *data, char **cmd_args)
 
 	exit_status = 0;
 	if (data->piped == 0)
-		ft_printf("exit\n");
+		ft_printf("exit, %s\n", cmd_args[0]);
 	if (!cmd_args[1])
-	{
 		ft_godark(data, cmd_args);
-	}
-	if (!is_numeric_arg(cmd_args[1], &exit_status))
+	ft_printf("a");
+	if (!is_numeric_arg(cmd_args[1], data))
 	{
-		handle_exit_error(cmd_args[1]);
-		data->status = 1;
+		print_exit_msg(cmd_args[1]);
 		return ;
 	}
+	ft_printf("a");
 	if (cmd_args[2])
 	{
 		write(2, "minishell: exit: too many arguments\n", 36);
 		data->status = 1;
 		return ;
 	}
+	ft_printf("a");
+	printf("%d", data->status);
 	ft_godark(data, cmd_args);
 }
