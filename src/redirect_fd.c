@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   files.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 19:57:22 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/06/03 20:22:15 by pda-silv         ###   ########.fr       */
+/*   Updated: 2025/06/08 19:28:22 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,13 @@ void	ft_open_redirect_fds(t_redir *redir, const char *in, const char *out)
 	{
 		if (redir->in_fd != STDIN_FILENO && redir->in_fd > 0)
 			close(redir->in_fd);
-		redir->in_fd = open(in, O_RDONLY);
-		if (redir->in_fd < 0)
+		if (redir->in_fd != -2)
+			redir->in_fd = open(in, O_RDONLY);
+		if (redir->in_fd == -1 && redir->in_fd != -2)
+		{
 			ft_printf(C_RED"minishell: %s: %s\n"RESET_ALL, in, strerror(errno));
+			redir->in_fd = -2;
+		}
 	}
 	if (out && *out)
 	{

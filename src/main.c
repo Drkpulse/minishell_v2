@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 11:39:13 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/06/02 22:12:25 by pda-silv         ###   ########.fr       */
+/*   Updated: 2025/06/08 19:06:38 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,11 @@ static void	ft_iohandler(t_data *data)
 	ft_strlcat(prompt, data->cwd, sizeof(prompt));
 	ft_strlcat(prompt, " > "RESET_COLOR, sizeof(prompt));
 	data->input = readline(prompt);
+	if (g_sigint_received)
+	{
+		data->status = g_sigint_received;
+		g_sigint_received = 0;
+	}
 	if (!data->input)
 		ft_shutdown(&data, OK);
 	ft_process_input(data);

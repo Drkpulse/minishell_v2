@@ -6,19 +6,22 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 14:37:51 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/06/03 22:50:25 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/08 19:06:22 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	g_sigint_received;
+
 /*
 ** Handles SIGINT and SIGQUIT at the prompt.
 */
-static void	ft_prompt_signal(int signum, t_data *data)
+static void ft_prompt_signal(int signum)
 {
 	if (signum == SIGINT)
 	{
+		g_sigint_received = 130;
 		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
