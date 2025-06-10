@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 20:11:45 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/10 01:58:57 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/10 10:10:26 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,14 +88,12 @@ static void	ft_handle_parent(t_data *data, int pipefd[2], int cmd_index)
 void	ft_handle_command(t_data *data, int *pipefd, int cmd_index,
 	char **cmd_args)
 {
-	int	status;
-
 	if (cmd_index > 0 && data->commands[cmd_index - 1].redir.out_fd
 		!= STDOUT_FILENO && data->commands[cmd_index].redir.in_fd
 		!= STDIN_FILENO)
 	{
 		if (data->pids[cmd_index - 1] > 0)
-			waitpid(data->pids[cmd_index - 1], &status, 0);
+			waitpid(data->pids[cmd_index - 1], NULL, 0);
 	}
 	ft_create_child_process(data, pipefd, cmd_index, cmd_args);
 	if (data->pids[cmd_index] > 0)
