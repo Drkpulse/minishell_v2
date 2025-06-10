@@ -72,26 +72,15 @@ void	ft_setup_heredoc_pipe(t_command *cmd)
 void	ft_handle_heredoc(t_data *data, t_command cmd, int cmd_index)
 {
 	ft_get_delim_buf(&cmd, cmd.redir.delim);
-	if (cmd.redir.out_fd != STDOUT_FILENO && cmd.redir.delim_buf)
-	{
-		ft_redirect_heredoc_to_file(&cmd);
-		if (cmd_index < data->cmd_count)
-		{
-			if (write(data->heredoc_sync[cmd_index][1], "", 1) == -1)
-				perror("write to heredoc sync");
-			close(data->heredoc_sync[cmd_index][1]);
-		}
-		free(cmd.redir.delim_buf);
-		return ;
-	}
+	if (cmd.redir.delim_buf)
+		ft_setup_heredoc_pipe(&cmd);
 	if (cmd_index < data->cmd_count)
 	{
 		if (write(data->heredoc_sync[cmd_index][1], "", 1) == -1)
 			perror("write to heredoc sync");
 		close(data->heredoc_sync[cmd_index][1]);
 	}
-	if (cmd.redir.delim_buf)
-		ft_setup_heredoc_pipe(&cmd);
+	
 }
 
 /* ************************************************************************** */

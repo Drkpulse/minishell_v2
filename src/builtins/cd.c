@@ -81,7 +81,8 @@ void	ft_cd(t_data *data, char **cmdargs)
 	char	*path;
 
 	path = get_cd_path(data, cmdargs);
-	if (!path)
+	//printf("%s", path);
+	if (!path || cmdargs[2])
 		return ;
 	getcwd(oldpwd, sizeof(oldpwd));
 	if (chdir(path) != 0)

@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-char	*ft_findcmd(char **dirs, char *cmd)
+static char	*ft_findcmd(char **dirs, char *cmd)
 {
 	char	*cmd_path;
 	char	*tmp;

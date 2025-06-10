@@ -15,15 +15,20 @@
 /************************/
 /*Checks for the -n flag*/
 /************************/
-int	is_valid_echo_flag(const char *flag)
+int	is_valid_echo_flag(char *flag)
 {
-	const char	*ch = flag + 1;
+	int	i;
+	char	*temp;
 
-	while (*ch != '\0')
+	i = 1;
+	temp = flag;
+	if(temp[0] != '-' || temp[1] == '\0')
+		return (0);
+	while (temp[i] != '\0')
 	{
-		if (*ch != 'n')
+		if (temp[i] != 'n')
 			return (0);
-		ch++;
+		i++;
 	}
 	return (1);
 }
@@ -38,9 +43,10 @@ void	ft_echo(t_data *data, char **cmd_args)
 
 	newline = 1;
 	i = 1;
-	while (cmd_args[i] && cmd_args[i][0] == '-'
-		&& is_valid_echo_flag(cmd_args[i]))
+	while ((cmd_args[i] && cmd_args[i][0] == '-' )
+		&& is_valid_echo_flag(cmd_args[i]) == 1)
 	{
+		printf("Newline\n");
 		newline = 0;
 		i++;
 	}

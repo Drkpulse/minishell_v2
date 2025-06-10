@@ -42,6 +42,7 @@ int	ft_is_quotes_balanced(const char *str)
  * Allocates memory for the resulting string
  * Returns newly allocated string, NULL if allocation fails
  */
+ /*
 char	*ft_strjoin3(char const *s1, char const *s2, char const *s3)
 {
 	char	*result;
@@ -61,4 +62,4 @@ char	*ft_strjoin3(char const *s1, char const *s2, char const *s3)
 	ft_strlcpy(result + len1, s2, len2 + 1);
 	ft_strlcpy(result + len1 + len2, s3, len3 + 1);
 	return (result);
-}
+}*/

@@ -107,91 +107,99 @@ typedef struct s_data
 }	t_data;
 
 //	Parsing
-int		ft_tokenize_input(t_data *data, char *ptr, int count);
+
+//parser.c
+int		ft_replace_tabs(char *str);
 char	*ft_parse_word(char **ptr, t_data *data);
 bool	ft_is_builtin(const char *command);
+//parser_quotes.c
+char	*ft_remove_quotes(char *str);
+int		handle_quotes(char **ptr, int *in_quotes, char *quote_type);
+char	*handle_quote(char *word, int *i, char *result, int *in_quotes);
+//parser_tokens.c
 char	**ft_tokens_to_args(t_command *command);
+//parser_vars.c
+char	*append_char(char *str, char c);
+char	*ft_expand_variables(char *word, t_data *data);
 
-//	Memory
-int		ft_initilaize(t_data **data, char **env);
-void	ft_shutdown(t_data **data, int retval);
+//pathing.c
+char	*ft_getenv(const char *name, char **env);
+void	ft_getpath(t_data *data, char *arg);
+
+//delim.c
+void	ft_get_delim_buf(t_command *command, char *delim);
 
 //	Execution
-void	ft_execute(t_data *data);
-char	*ft_getenv(const char *name, char **env);
+//execute.c
+void	ft_cleanup_command_resources(t_data *data);
 void	ft_execute_command(t_data *data, char **cmd_args, t_token_type type);
-
-//	Builtin
-void	ft_execute_lone_builtin(t_data *data, int cmd_index, char **cmd_args);
+void	ft_execute(t_data *data);
+//execute1.c
+void	ft_safe_close(int *fd);
 void	ft_handle_command(t_data *data, int *pipefd, int cmd_index,
 			char **cmd_args);
+void	ft_execute_lone_builtin(t_data *data, int cmd_index, char **cmd_args);
+
+//	Builtin
+//builtin.c
 void	ft_execute_builtin(t_data *data, char **cmd_args);
-void	ft_exit(t_data *data, char **cmd_args);
-void	ft_print_sorted_env(char **env);
-void	ft_export(t_data *data, char **cmd_args);
-void	ft_unset(t_data *data, char **cmd_args);
 void	ft_cd(t_data *data, char **cmd_args);
 void	ft_echo(t_data *data, char **cmd_args);
 void	ft_pwd(t_data *data, char **cmd_args);
 void	ft_env(t_data *data);
+void	ft_exit(t_data *data, char **cmd_args);
+//export:
+void	ft_export(t_data *data, char **cmd_args);
+void	ft_print_sorted_env(char **env);
+void	ft_update_shlvl(t_data *data);
 
-//	Pathing
-void	ft_getpath(t_data *data, char *arg);
-char	*ft_expand_variables(char *word, t_data *data);
-
-//	Pipe
-void	ft_handle_pipes(t_data *data, int pipefd[2],
-			t_command command, int cmd_index);
-void	ft_wait_children(t_data *data, pid_t *pids);
-void	ft_pipe_error(t_data *data, char	**cmd_args);
-
-//	Error handling
-void	ft_setup_pipes(int pipefd[2]);
-void	ft_pipe_error(t_data *data, char	**cmd_args);
-void	ft_free_cmd(t_data *data, char	**cmd_args);
-
+void	ft_unset(t_data *data, char **cmd_args);
 //	FD handling
+
+//redict_fd.c
 void	ft_open_redirect_fds(t_redir *redir, const char *in, const char *out);
 void	ft_close_redirect_fds(t_redir *redir);
-void	ft_get_delim_buf(t_command *command, char *delim);
 
-// Sorting
+// Heredoc
 
-void	ft_handle_pipes(t_data *data, int pipefd[2],
-			t_command command, int cmd_index);
-void	ft_handle_heredoc(t_data *data, t_command cmd, int cmd_index);
-char	*ft_remove_quotes(char *str);
-int		handle_quotes(char **ptr, int *in_quotes, char *quote_type);
-char	*handle_quote(char *word, int *i, char *result, int *in_quotes);
-char	*append_char(char *str, char c);
-void	ft_free_cmd(t_data *data, char **cmd_args);
-char	*ft_skip_whitespace(char *ptr);
-t_token	ft_parse_token(char **ptr, t_data *data);
-int		ft_handle_quotes_in_input(t_data *data);
-void	swap_strings(char **a, char **b);
-int		var_exists(char **env, char *var);
-
-void	ft_free_tokens(t_data *data);
-int		ft_is_quotes_balanced(const char *str);
-void	ft_cleanup_execution(t_data *data);
-void	ft_safe_close(int *fd);
-void	write_error_message(char *var);
-int		ft_replace_tabs(char *str);
-int		is_valid_identifier_char(char c, int first_char);
-int		check_identifier(char *arg);
-void	ft_free_env_array(t_data *data);
-int		ft_disable_echoctl(void);
-void	ft_set_prompt_signals(void);
-void	ft_set_child_signals(void);
-void	ft_update_shlvl(t_data *data);
-void	ft_godark(t_data *data, char **cmd_args);
+//redirect_heredoc.c
 void	ft_redirect_heredoc_to_file(t_command *command);
 void	ft_setup_heredoc_pipe(t_command *cmd);
 void	ft_handle_heredoc(t_data *data, t_command cmd, int cmd_index);
-void	process_var_with_equal(t_data *data, char *var);
-void	add_env_variable(t_data *data, char *var, int count);
-void	ft_cleanup_command_resources(t_data *data);
 void	ft_setup_heredoc_sync(t_data *data);
+
+//	Pipes
+
+//redirect_pipes.c
+void	ft_handle_pipes(t_data *data, int pipefd[2],
+			t_command command, int cmd_index);
+//pipes.c
+void	ft_wait_children(t_data *data, pid_t *pids);
+void	ft_setup_pipes(int pipefd[2]);
+void	ft_pipe_error(t_data *data, char	**cmd_args);
+void	ft_safe_pipe(int pipefd[2], t_data *data, char **cmd_args);
+//shutdown.c
+void	ft_free_tokens(t_data *data);
+void	ft_free_env_array(t_data *data);
+void	ft_shutdown(t_data **data, int retval);
+void	ft_godark(t_data *data, char **cmd_args);
+void	ft_cleanup_execution(t_data *data);
+//signals.c
+void	ft_set_prompt_signals(void);
+void	ft_set_child_signals(void);
+//starup.c
+int		ft_initilaize(t_data **data, char **env);
+//token_deez_nuts.c
 void	ft_add_token_to_command(t_data *data, t_token token, int *count);
+
+//token_parse.c
+char	*ft_skip_whitespace(char *ptr);
+t_token	ft_parse_token(char **ptr, t_data *data);
+//token_quotes
+int		ft_is_quotes_balanced(const char *str);
+
+//tokenization.c
+int		ft_tokenize_input(t_data *data, char *ptr, int count);
+void	ft_free_cmd(t_data *data, char	**cmd_args);
 
 #endif
