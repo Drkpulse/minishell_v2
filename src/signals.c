@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 14:37:51 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/06/08 19:06:22 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/08 20:34:43 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	g_sigint_received;
 
 /*
-** Handles SIGINT and SIGQUIT at the prompt.
+** Handles SIGINT at the prompt.
 */
 static void ft_prompt_signal(int signum)
 {
@@ -26,18 +26,17 @@ static void ft_prompt_signal(int signum)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
-		data->status = 130;
 	}
 }
 
 /*
 ** Signal handler for prompt state.
 */
-static void	ft_prompt_handler(int signum, siginfo_t *info, void *context, t_data *data)
+static void	ft_prompt_handler(int signum, siginfo_t *info, void *context)
 {
 	(void)info;
 	(void)context;
-	ft_prompt_signal(signum, data);
+	ft_prompt_signal(signum);
 }
 
 /*

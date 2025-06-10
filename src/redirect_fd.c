@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   files.c                                            :+:      :+:    :+:   */
+/*   redirect_fd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 19:57:22 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/06/08 19:28:22 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/10 02:26:24 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ft_open_redirect_fds(t_redir *redir, const char *in, const char *out)
 			redir->in_fd = open(in, O_RDONLY);
 		if (redir->in_fd == -1 && redir->in_fd != -2)
 		{
-			ft_printf(C_RED"minishell: %s: %s\n"RESET_ALL, in, strerror(errno));
+			printf(C_RED"minishell: %s: %s\n"RESET_ALL, in, strerror(errno));
 			redir->in_fd = -2;
 		}
 	}
@@ -35,7 +35,7 @@ void	ft_open_redirect_fds(t_redir *redir, const char *in, const char *out)
 		else
 			redir->out_fd = open(out, O_CREAT | O_TRUNC | O_WRONLY, FILE_PERM);
 		if (redir->out_fd < 0)
-			ft_printf(C_RED"minishell: %s: %s\n"RESET_ALL, out,
+			printf(C_RED"minishell: %s: %s\n"RESET_ALL, out,
 				strerror(errno));
 		redir->append = false;
 	}

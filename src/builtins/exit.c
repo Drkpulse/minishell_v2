@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 14:27:48 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/03 20:42:15 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/10 02:29:13 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,27 +76,20 @@ static void	print_exit_msg(char *arg)
 /*********************/
 void	ft_exit(t_data *data, char **cmd_args)
 {
-	int	exit_status;
-
-	exit_status = 0;
 	if (data->piped == 0)
-		ft_printf("exit, %s\n", cmd_args[0]);
+		printf("exit\n");
 	if (!cmd_args[1])
 		ft_godark(data, cmd_args);
-	ft_printf("a");
 	if (!is_numeric_arg(cmd_args[1], data))
 	{
 		print_exit_msg(cmd_args[1]);
 		return ;
 	}
-	ft_printf("a");
 	if (cmd_args[2])
 	{
 		write(2, "minishell: exit: too many arguments\n", 36);
 		data->status = 1;
 		return ;
 	}
-	ft_printf("a");
-	printf("%d", data->status);
 	ft_godark(data, cmd_args);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_parse.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 10:23:36 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/02 22:10:26 by pda-silv         ###   ########.fr       */
+/*   Updated: 2025/06/10 02:03:11 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void	ft_parse_input_redir(char **ptr, t_token *token)
 		*ptr = ft_skip_whitespace(*ptr);
 		if (!**ptr || **ptr == '|' || **ptr == '>' || **ptr == '<')
 		{
-			ft_printf(C_RED
+			printf(C_RED
 				"minishell: syntax error near unexpected token `newline'\n"
 				RESET_ALL);
 			ft_free((void **)&token->value);

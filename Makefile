@@ -10,11 +10,13 @@ SRC_FILES	=	main.c startup.c parser.c tokenization.c shutdown.c execute.c pathin
 SRC			=	${addprefix ./src/, ${SRC_FILES} ${BUILTIN_FILES}}
 OBJ			=	${SRC:.c=.o}
 
-##	BASIC RULES
-${NAME}: init libft ${OBJ}
-	${CC} ${CFLAGS} ${OBJ} ${INCLUDES} ${LIBRARIES} ${LIBS} -o ${BIN_DIR}/${NAME}
-
 all: ${NAME}
+
+${NAME}: ${BIN_DIR}/${NAME}
+
+##	BASIC RULES
+${BIN_DIR}/${NAME}: ${OBJ} | init libft
+	${CC} ${CFLAGS} ${OBJ} ${INCLUDES} ${LIBRARIES} ${LIBS} -o $@
 
 clean: libft_clean
 	rm -f ${OBJ}

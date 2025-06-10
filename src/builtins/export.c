@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pda-silv <pda-silv@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 14:27:48 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/03 20:30:42 by pda-silv         ###   ########.fr       */
+/*   Updated: 2025/06/10 02:29:11 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ void	ft_export(t_data *data, char **cmd_args)
 	{
 		if (!check_identifier(cmd_args[i]))
 		{
-			ft_printf(C_RED"export: not a valid identifier: %s\n"RESET_COLOR,
+			printf(C_RED"export: not a valid identifier: %s\n"RESET_COLOR,
 				cmd_args[i]);
 			i++;
 			continue ;

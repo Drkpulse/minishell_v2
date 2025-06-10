@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 14:48:25 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/06/01 20:13:42 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/10 02:33:00 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,15 @@ static void	ft_process_eof(char *delim)
 
 static int	ft_check_delimiter(char *new, char *delim)
 {
-	if (ft_strncmp(new, delim, ft_strlen(delim) + 1) == 0)
+	size_t	new_len;
+	size_t	delim_len;
+
+	if (!new)
+		return (0);
+	new_len = ft_strlen(new);
+	delim_len = ft_strlen(delim);
+
+	if (new_len == delim_len && ft_strncmp(new, delim, delim_len) == 0)
 	{
 		free(new);
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 11:39:39 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/06/08 19:04:05 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/10 02:27:31 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,11 @@
 # include <sys/wait.h>
 # include <termios.h>
 # include <limits.h>
+# include <fcntl.h>
 # include "libft/libft.h"
+# include "colors.h"
+# include <errno.h>
+# include <stdbool.h>
 
 # define OP_SQUOTE '\''
 # define OP_DQUOTE '\"'
@@ -177,7 +181,7 @@ int		is_valid_identifier_char(char c, int first_char);
 int		check_identifier(char *arg);
 void	ft_free_env_array(t_data *data);
 int		ft_disable_echoctl(void);
-void	ft_set_prompt_signals(t_data *data);
+void	ft_set_prompt_signals(void);
 void	ft_set_child_signals(void);
 void	ft_update_shlvl(t_data *data);
 void	ft_godark(t_data *data, char **cmd_args);

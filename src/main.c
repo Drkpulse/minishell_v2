@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 11:39:13 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/06/08 19:06:38 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/10 02:02:05 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ft_process_input(t_data *data)
 		add_history(data->input);
 	if (!ft_is_quotes_balanced(data->input))
 	{
-		ft_printf(C_RED"Invalid Input - Unclosed Quotes\n"RESET_ALL);
+		printf(C_RED"Invalid Input - Unclosed Quotes\n"RESET_ALL);
 		data->status = 1;
 		if (data->input)
 			ft_free((void **)&data->input);
@@ -46,7 +46,7 @@ static void	ft_iohandler(t_data *data)
 {
 	char	prompt[MAX_CWD_SIZE + 20];
 
-	ft_set_prompt_signals(data);
+	ft_set_prompt_signals();
 	if (!getcwd(data->cwd, sizeof(data->cwd)))
 	{
 		perror("getcwd");

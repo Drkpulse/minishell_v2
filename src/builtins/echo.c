@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 14:27:48 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/02 22:14:40 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/10 02:29:24 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,12 @@ void	ft_echo(t_data *data, char **cmd_args)
 	}
 	while (cmd_args[i])
 	{
-		ft_printf("%s", cmd_args[i]);
+		printf("%s", cmd_args[i]);
 		if (cmd_args[i + 1])
-			ft_printf(" ");
+			printf(" ");
 		i++;
 	}
 	if (newline)
-		ft_printf("\n");
+		printf("\n");
 	data->status = 0;
 }

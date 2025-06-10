@@ -6,11 +6,23 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 20:11:45 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/02 22:01:08 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/10 01:58:57 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	ft_set_exec_signals(void)
+{
+    struct sigaction	sa;
+
+    sigemptyset(&sa.sa_mask);
+    sa.sa_handler = SIG_IGN;
+    sa.sa_flags = 0;
+    sigaction(SIGINT, &sa, NULL);
+    sigaction(SIGQUIT, &sa, NULL);
+    sigaction(SIGPIPE, &sa, NULL);
+}
 
 /* ************************************************************************** */
 /*                                                                            */
@@ -22,8 +34,6 @@
 static void	ft_create_child_process(t_data *data, int pipefd[2],
 	int cmd_index, char **cmd_args)
 {
-	struct sigaction	sa;
-
 	if (cmd_index < data->cmd_count)
 		ft_setup_pipes(pipefd);
 	data->pids[cmd_index] = fork();
@@ -39,11 +49,7 @@ static void	ft_create_child_process(t_data *data, int pipefd[2],
 	}
 	else
 	{
-		sigemptyset(&sa.sa_mask);
-		sa.sa_handler = SIG_IGN;
-		sa.sa_flags = 0;
-		sigaction(SIGINT, &sa, NULL);
-		sigaction(SIGQUIT, &sa, NULL);
+		ft_set_exec_signals();
 	}
 }
 
@@ -82,12 +88,14 @@ static void	ft_handle_parent(t_data *data, int pipefd[2], int cmd_index)
 void	ft_handle_command(t_data *data, int *pipefd, int cmd_index,
 	char **cmd_args)
 {
+	int	status;
+
 	if (cmd_index > 0 && data->commands[cmd_index - 1].redir.out_fd
 		!= STDOUT_FILENO && data->commands[cmd_index].redir.in_fd
 		!= STDIN_FILENO)
 	{
 		if (data->pids[cmd_index - 1] > 0)
-			waitpid(data->pids[cmd_index - 1], NULL, 0);
+			waitpid(data->pids[cmd_index - 1], &status, 0);
 	}
 	ft_create_child_process(data, pipefd, cmd_index, cmd_args);
 	if (data->pids[cmd_index] > 0)

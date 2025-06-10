@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 20:11:45 by joseferr          #+#    #+#             */
-/*   Updated: 2025/06/08 19:31:30 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/10 02:37:16 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	ft_cleanup_command_resources(t_data *data)
 
 void	ft_command_not_found(t_data *data, char **cmd_args)
 {
-	ft_printf(C_RED"%s: Command not found\n"RESET_ALL, cmd_args[0]);
+	printf(C_RED"%s: Command not found\n"RESET_ALL, cmd_args[0]);
 	ft_free((void **)&data->cmd_path);
 	ft_free_array((void **)cmd_args);
 	ft_free_env_array(data);
