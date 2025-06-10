@@ -6,7 +6,7 @@
 /*   By: joseferr <joseferr@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 09:23:36 by pda-silv          #+#    #+#             */
-/*   Updated: 2025/06/10 02:05:53 by joseferr         ###   ########.fr       */
+/*   Updated: 2025/06/10 03:07:24 by joseferr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,14 @@
 static void	ft_header(void)
 {
 	printf(C_BRT_GREEN "\n");
-	printf("  _ _ ___         _      _    _        _ _ \n");
-	printf(" | | |_  )  _ __ (_)_ _ (_)__| |_  ___| | |\n");
-	printf(" |_  _/ /  | '  \\| | ' \\| (_-< ' \\/ -_) | |\n");
-	printf("   |_/___| |_|_|_|_|_||_|_/__/_||_\\___|_|_|\n");
+	printf(" _        _         __     __)                             \n");
+	printf(" /   /   '  )      (, /|  /|   ,      ,     /)       /) /) \n");
+	printf("/___/_  ,--'         / | / |    __      _  (/    _  // //  \n");
+	printf("   /   /___       ) /  |/  |__(_/ (__(_/_)_/ )__(/_(/_(/_  \n");
+	printf("  /              (_/   '                                   \n");
 	printf("\n\tProject by joseferr & anferrei\n\n" RESET_COLOR);
 }
+
 
 static int	ft_init_data(t_data **data)
 {
