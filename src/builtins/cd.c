@@ -81,13 +81,12 @@ void	ft_cd(t_data *data, char **cmdargs)
 	char	*path;
 
 	path = get_cd_path(data, cmdargs);
-	
 	if (!path[0])
-		return;
+		return ;
 	else if (cmdargs[2])
 	{
 		data->status = 1;
-		printf("cd: too many arguments\n");	
+		printf("cd: too many arguments\n");
 		return ;
 	}
 	getcwd(oldpwd, sizeof(oldpwd));

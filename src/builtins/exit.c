@@ -12,25 +12,24 @@
 
 #include "minishell.h"
 
-long read_num_exit(char *arg, t_data *data, int i, bool neg)
+static bool	its_long(char *arg)
 {
-	long result;
+	if (ft_strlen(arg) >= 20 || (ft_strlen(arg) == 19
+			&& !(arg[0] == '+' || arg[0] == '-')))
+		return (0);
+	return (1);
+}
+
+long	read_num_exit(char *arg, int i)
+{
+	long	result;
 
 	result = 0;
 	while (arg[i])
 	{
-		if(!ft_isdigit(arg[i]))
-		{
-
-			data->status = 2;
-			return(-1);
-		}
-		result = result * 10 + (arg[i] - '0');
-		if ((!neg && result > LONG_MAX) || (neg && -result < LONG_MIN))
-		{
-			data->status = 2;
+		if (!ft_isdigit(arg[i]))
 			return (-1);
-		}
+		result = result * 10 + (arg[i] - '0');
 		i ++;
 	}
 	return (result);
@@ -40,7 +39,7 @@ static int	is_numeric_arg(char *arg, t_data *data)
 {
 	int		i;
 	bool	neg;
-	long 	result;
+	long	result;
 
 	i = 0;
 	neg = 0;
@@ -53,22 +52,15 @@ static int	is_numeric_arg(char *arg, t_data *data)
 	if (!arg[i])
 	{
 		data->status = 2;
-		return(0);
+		return (0);
 	}
-	result = read_num_exit(arg, data, i, neg);
+	result = read_num_exit(arg, i);
 	if (result == -1)
 		return (0);
 	data->status = (int)(result % 256);
 	if (neg)
 		data->status = 256 - data->status;
-	return(1);
-}
-
-static void	print_exit_msg(char *arg)
-{
-	write(2, "minishell: exit: ", 17);
-	write(2, arg, ft_strlen(arg));
-	write(2, ": numeric argument required\n", 28);
+	return (1);
 }
 
 /*********************/
@@ -80,15 +72,16 @@ void	ft_exit(t_data *data, char **cmd_args)
 		printf("exit\n");
 	if (!cmd_args[1])
 		ft_godark(data, cmd_args);
-	if (!is_numeric_arg(cmd_args[1], data))
+	else if (cmd_args[2] && is_numeric_arg(cmd_args[1], data))
 	{
-		print_exit_msg(cmd_args[1]);
+		printf("exit: too many arguments\n");
+		data->status = 1;
 		return ;
 	}
-	if (cmd_args[2])
+	else if ((!its_long(cmd_args[1])) ||!is_numeric_arg(cmd_args[1], data))
 	{
-		write(2, "minishell: exit: too many arguments\n", 36);
-		data->status = 1;
+		printf("exit: too many arguments\n");
+		data->status = 2;
 		return ;
 	}
 	ft_godark(data, cmd_args);
