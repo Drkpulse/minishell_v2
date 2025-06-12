@@ -153,7 +153,7 @@ void	ft_execute_lone_builtin(t_data *data, int cmd_index, char **cmd_args);
 void	ft_execute_builtin(t_data *data, char **cmd_args);
 void	ft_cd(t_data *data, char **cmd_args);
 void	ft_echo(t_data *data, char **cmd_args);
-void	ft_pwd(t_data *dssata, char **cmd_args);
+void	ft_pwd(t_data *dssata);
 void	ft_env(t_data *data);
 void	ft_exit(t_data *data, char **cmd_args);
 //export.c:

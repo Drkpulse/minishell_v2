@@ -15,13 +15,7 @@
 /*********************/
 /*PWD Builtin Command*/
 /*********************/
-void	ft_pwd(t_data *data, char **cmd_args)
+void	ft_pwd(t_data *data)
 {
-	if (!cmd_args[1])
-		printf("%s\n", data->cwd);
-	else
-	{
-		ft_putstr_fd("pwd: too many arguments\n", STDERR_FILENO);
-		data->status = 1;
-	}
+	printf("%s\n", data->cwd);
 }

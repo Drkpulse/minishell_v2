@@ -26,7 +26,7 @@ void	ft_execute_builtin(t_data *data, char **cmd_args)
 	if (!ft_strncmp(OP_EXT, cmd, len))
 		ft_exit(data, cmd_args);
 	if (!ft_strncmp(OP_PWD, cmd, len))
-		ft_pwd(data, cmd_args);
+		ft_pwd(data);
 	if (!ft_strncmp(OP_ECHO, cmd, len))
 		ft_echo(data, cmd_args);
 	if (!ft_strncmp(OP_ENV, cmd, len))
