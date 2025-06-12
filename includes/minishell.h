@@ -153,14 +153,23 @@ void	ft_execute_lone_builtin(t_data *data, int cmd_index, char **cmd_args);
 void	ft_execute_builtin(t_data *data, char **cmd_args);
 void	ft_cd(t_data *data, char **cmd_args);
 void	ft_echo(t_data *data, char **cmd_args);
-void	ft_pwd(t_data *data, char **cmd_args);
+void	ft_pwd(t_data *dssata, char **cmd_args);
 void	ft_env(t_data *data);
 void	ft_exit(t_data *data, char **cmd_args);
-//export:
+//export.c:
 void	ft_export(t_data *data, char **cmd_args);
+void	process_var_with_equal(t_data *data, char *var);
+//export_print.c
 void	ft_print_sorted_env(char **env);
+//export_shvl.c
 void	ft_update_shlvl(t_data *data);
-
+//export_supp.c
+int	var_exists(char **env, char *var);
+int	check_identifier(char *arg);
+void	write_error_message(char *var);
+void	swap_strings(char **a, char **b);
+void	add_env_variable(t_data *data, char *var, int count);
+//unset.c
 void	ft_unset(t_data *data, char **cmd_args);
 //	FD handling
 
