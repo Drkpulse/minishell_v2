@@ -106,6 +106,14 @@ typedef struct s_data
 	int			heredoc_sync[MAX_PIPE_COUNT][2];
 }	t_data;
 
+
+void	ft_print_sorted_env(char **env);
+void	swap_strings(char **a, char **b);
+int	var_exists(char **env, char *var);
+void	write_error_message(char *var);
+int	check_identifier(char *arg);
+void	add_env_variable(t_data *data, char *var, int count);
+void	process_var_with_equal(t_data *data, char *var);
 //	Parsing
 
 //parser.c
