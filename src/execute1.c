@@ -14,14 +14,14 @@
 
 void	ft_set_exec_signals(void)
 {
-    struct sigaction	sa;
+	struct sigaction	sa;
 
-    sigemptyset(&sa.sa_mask);
-    sa.sa_handler = SIG_IGN;
-    sa.sa_flags = 0;
-    sigaction(SIGINT, &sa, NULL);
-    sigaction(SIGQUIT, &sa, NULL);
-    sigaction(SIGPIPE, &sa, NULL);
+	sigemptyset(&sa.sa_mask);
+	sa.sa_handler = SIG_IGN;
+	sa.sa_flags = 0;
+	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
+	sigaction(SIGPIPE, &sa, NULL);
 }
 
 /* ************************************************************************** */

@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-
 void	ft_free_tokens(t_data *data)
 {
 	int	i;
@@ -51,6 +50,7 @@ void	ft_free_env_array(t_data *data)
 	}
 	ft_free((void **)&data->env);
 }
+
 //this function its onlu used for exit()- is aux function
 void	ft_shutdown(t_data **data, int retval)
 {

@@ -36,7 +36,6 @@ static int	ft_check_delimiter(char *new, char *delim)
 		return (0);
 	new_len = ft_strlen(new);
 	delim_len = ft_strlen(delim);
-
 	if (new_len == delim_len && ft_strncmp(new, delim, delim_len) == 0)
 	{
 		free(new);

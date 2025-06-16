@@ -164,8 +164,8 @@ void	ft_print_sorted_env(char **env);
 //export_shvl.c
 void	ft_update_shlvl(t_data *data);
 //export_supp.c
-int	var_exists(char **env, char *var);
-int	check_identifier(char *arg);
+int		var_exists(char **env, char *var);
+int		check_identifier(char *arg);
 void	write_error_message(char *var);
 void	swap_strings(char **a, char **b);
 void	add_env_variable(t_data *data, char *var, int count);

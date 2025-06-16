@@ -42,7 +42,7 @@ int	ft_is_quotes_balanced(const char *str)
  * Allocates memory for the resulting string
  * Returns newly allocated string, NULL if allocation fails
  */
- /*
+/*
 char	*ft_strjoin3(char const *s1, char const *s2, char const *s3)
 {
 	char	*result;

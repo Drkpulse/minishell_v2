@@ -186,7 +186,7 @@ void	ft_free_array(void **array);
  * @param c Character to check.
  * @returns 1 if true, 0 if false.
 */
-int	ft_isspace(int c);
+int		ft_isspace(int c);
 
 //BONUS FUNCTIONS//
 typedef struct s_list

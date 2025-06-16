@@ -24,7 +24,6 @@ static void	ft_header(void)
 	printf("\n\tProject by joseferr & anferrei\n\n" RESET_COLOR);
 }
 
-
 static int	ft_init_data(t_data **data)
 {
 	*data = ft_calloc(1, sizeof(t_data));

@@ -17,7 +17,7 @@ int	g_sigint_received;
 /*
 ** Handles SIGINT at the prompt.
 */
-static void ft_prompt_signal(int signum)
+static void	ft_prompt_signal(int signum)
 {
 	if (signum == SIGINT)
 	{

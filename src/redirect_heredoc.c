@@ -80,7 +80,6 @@ void	ft_handle_heredoc(t_data *data, t_command cmd, int cmd_index)
 			perror("write to heredoc sync");
 		close(data->heredoc_sync[cmd_index][1]);
 	}
-	
 }
 
 /* ************************************************************************** */
