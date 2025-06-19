@@ -67,18 +67,6 @@ static void	ft_iohandler(t_data *data)
 	ft_process_input(data);
 }
 
-/* Adds a tab character when TAB is pressed instead of autocompletion */
-static int	ft_tab_handler(int count, int key)
-{
-	(void)count;
-	if (key == '\t')
-	{
-		rl_insert_text("\t");
-		return (0);
-	}
-	return (1);
-}
-
 int	ft_disable_echoctl(void)
 {
 	struct termios	term;
@@ -104,7 +92,6 @@ int	main(int argc, char **argv, char **env)
 		write(2, "minishell: failed to set terminal attributes\n", 44);
 		ft_shutdown(&data, NOK);
 	}
-	rl_bind_key('\t', &ft_tab_handler);
 	while (true)
 		ft_iohandler(data);
 	ft_shutdown(&data, OK);

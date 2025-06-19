@@ -47,8 +47,8 @@ static int	is_matching_var(char *env_var, char *arg)
 	var_len = 0;
 	while (arg[var_len])
 	{
-		if(arg[var_len] == '=')
-			return(0);
+		if (arg[var_len] == '=')
+			return (0);
 		var_len++;
 	}
 	if (ft_strncmp(env_var, arg, var_len) == 0

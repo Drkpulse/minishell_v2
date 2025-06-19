@@ -54,3 +54,18 @@ void	ft_close_redirect_fds(t_redir *redir)
 	if (redir->out_fd != STDOUT_FILENO)
 		ft_safe_close(&redir->out_fd);
 }
+
+/* ************************************************************************** */
+/*                                                                            */
+/*   Safely closes a file descriptor if it's valid                           */
+/*   Updates the descriptor to -1 after closing to prevent double closing    */
+/*   Ignores descriptors that are already set to -1                          */
+/* ************************************************************************** */
+void	ft_safe_close(int *fd)
+{
+	if (fd && *fd >= 0)
+	{
+		close(*fd);
+		*fd = -1;
+	}
+}
